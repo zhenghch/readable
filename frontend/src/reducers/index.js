@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 import Actions from '../actions';
 
+// helper function to select/filter specific post
 function selectPost(posts, id, func){
-  return Object.key(posts)
+  return Object.keys(posts)
     .filter(key => func(id, key))
     .reduce((res, key) => ({...res, [key]: posts[key]}), {});
 }
 
+// select specific category
 function viewCategory(state='all', action){
   if (action.type === Actions.SELECT_CATEGORY){
     return action.category;
@@ -15,6 +17,7 @@ function viewCategory(state='all', action){
   }
 }
 
+// add, del, edit post
 function handlePosts(state={}, action){
   let post = action.post || {},
       cate = post.category,
