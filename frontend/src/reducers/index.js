@@ -8,6 +8,16 @@ function selectPost(posts, id, func){
     .reduce((res, key) => ({...res, [key]: posts[key]}), {});
 }
 
+/////////////////
+// store categories into store
+function setCategoryList(state=[], action){
+  if (action.type === Actions.LIST_CATEGORY){
+    return action.categories;
+  }else{
+    return state;
+  }
+}
+
 // select specific category
 function viewCategory(state='all', action){
   if (action.type === Actions.SELECT_CATEGORY){
@@ -66,6 +76,7 @@ function handlePosts(state={}, action){
 }
 
 export default combineReducers({
+  categories: setCategoryList,
   category: viewCategory,
   posts: handlePosts
 });
