@@ -19,7 +19,7 @@ function setCategoryList(state=[], action){
 }
 
 // select specific category
-function viewCategory(state='all', action){
+function viewCategory(state='', action){
   if (action.type === Actions.SELECT_CATEGORY){
     return action.category;
   }else{
