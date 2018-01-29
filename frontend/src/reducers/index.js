@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import Actions from '../actions';
 
 // helper function to select/filter specific post
@@ -18,14 +17,6 @@ function setCategoryList(state=[], action){
   }
 }
 
-// select specific category
-function viewCategory(state='', action){
-  if (action.type === Actions.SELECT_CATEGORY){
-    return action.category;
-  }else{
-    return state;
-  }
-}
 
 // add, del, edit post
 function handlePosts(state={}, action){
@@ -75,8 +66,5 @@ function handlePosts(state={}, action){
   }
 }
 
-export default combineReducers({
-  categories: setCategoryList,
-  category: viewCategory,
-  posts: handlePosts
-});
+export { setCategoryList as categories };
+export { handlePosts as posts };

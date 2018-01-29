@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link, { NavLink} from 'redux-first-router-link';
 import Actions from '../actions';
-import * as ReadAPI from '../utils/api.js';
-
+import * as ReadAPI from '../utils/api';
+import '../css/Categories.css';
 
 class Categories extends Component{
   componentDidMount(){
@@ -13,15 +13,19 @@ class Categories extends Component{
 
   render(){
     return(
-      <div>
+      <div className="sidebar">
+        <h2>Categories</h2>
+
+        <Link to='/'>
+          All
+        </Link>
+
         {
           this.props.categories.map(cate => (
-            <div>
-              <Link to={`/${cate.path}`}
-                    key={cate.name}
-                    style={{display: "block", width:"50px", height:"50px", boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"}}
-                    >{cate.name}</Link>
-            </div>
+            <NavLink
+              to={{ type: 'CATEGORIES', payload:{category: cate.path}}}
+              key={cate.name}
+              >{cate.name}</NavLink>
           ))
         }
       </div>
@@ -29,11 +33,11 @@ class Categories extends Component{
   }
 }
 
-const mapStateToProps = ({categories, category }) => ({
-    categories,
-    category
-});
 
+const mapStateToProps = ({categories, location }) => ({
+  categories: categories || [],
+  path: location.pathname
+});
 
 const mapDispatchToProps = dispatch => ({
     updateCategories: categories => dispatch(Actions.listCategory(categories))
@@ -41,7 +45,6 @@ const mapDispatchToProps = dispatch => ({
 
 
 Categories = connect(mapStateToProps, mapDispatchToProps)(Categories);
-
 export  {
   Categories
 };
