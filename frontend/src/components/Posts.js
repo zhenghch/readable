@@ -3,8 +3,42 @@ import { connect } from 'react-redux';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 import '../css/Posts.css';
+import FaArrowDown from 'react-icons/lib/fa/arrow-down';
+import FaArrowUp from 'react-icons/lib/fa/arrow-up';
 
-class PostsOverview extends Component {
+function sortFunc(sorts){
+  const by = sorts.by || 'timestamp';
+  const how = sorts.how || 'decrease';
+  const cmp = how === 'decrease' ? (a, b) => b-a : (a,b) => a-b;
+
+  return (a, b) => cmp(a[by], b[by]);
+}
+
+
+function PostBar(props){
+  return (
+    <div>
+      <p>{props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}</p>
+      <div><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
+          {props.post.voteScore}
+          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/></div>
+    </div>
+  );
+}
+PostBar = connect()(PostBar);
+
+function PostOverview(props){
+  return (
+    <div>
+      <div className="title">{props.post.title}</div>
+      <PostBar post={props.post}/>
+    </div>
+
+  );
+}
+
+
+class PostsListView extends Component {
   // get posts
   componentDidMount(){
     ReadAPI.getPosts()
@@ -35,14 +69,14 @@ class PostsOverview extends Component {
                         .map(id => posts[cate][id]);
     }
 
+    // sort posts
+    let cmp = sortFunc(this.props.sorts);
+
     return (
       <div className="list">
         {
-          postLists.map(post => (
-            <div key={post.id}>
-              <div className="title" >{post.title}</div>
-              <div className="content">{post.body}</div>
-            </div>
+          postLists.sort(cmp).map(post => (
+            <PostOverview post={post} key={post.id}/>
           ))
         }
       </div>
@@ -50,9 +84,10 @@ class PostsOverview extends Component {
   }
 }
 
-const mapStateToProps = ({categories, posts, location }) => ({
+const mapStateToProps = ({categories, posts, sorts, location }) => ({
   categories,
   posts,
+  sorts,
   payload: location.payload
 });
 
@@ -60,8 +95,8 @@ const mapDispatchToProps = dispatch => ({
   updatePosts: posts => dispatch(Actions.updateAllPosts(posts))
 });
 
-PostsOverview = connect(mapStateToProps, mapDispatchToProps)(PostsOverview);
+PostsListView = connect(mapStateToProps, mapDispatchToProps)(PostsListView);
 
 export {
-  PostsOverview
+  PostsListView
 };

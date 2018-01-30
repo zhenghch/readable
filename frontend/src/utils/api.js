@@ -23,3 +23,15 @@ export const getCategories = () =>
 export const getPosts = () =>
   fetch(`${origin}/posts`, { headers })
   .then(res => res.json());
+
+
+// up/down vote post
+export const votePost = (id, option) =>
+  fetch(`${origin}/posts/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({option})
+    }).then(res => console.log(res.json()));

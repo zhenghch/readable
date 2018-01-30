@@ -11,6 +11,15 @@ h2 {
   text-shadow: 1px 1px 1px #2d2d2d;
   -webkit-font-smoothing: antialiased;
 }
+
+.sort {
+  color: white;
+  background: rgb(35, 40, 42);
+  font-size: 0.875rem;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 .sidebar a, .sidebar span {
   display: block;
   color: white;

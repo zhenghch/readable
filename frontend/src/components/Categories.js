@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Link, { NavLink} from 'redux-first-router-link';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
-import '../css/Categories.css';
 
 class Categories extends Component{
   // get categories
@@ -15,7 +14,7 @@ class Categories extends Component{
   // render categories
   render(){
     return(
-      <div className="sidebar">
+      <div>
         <h2>Categories</h2>
 
         <Link to='/'>

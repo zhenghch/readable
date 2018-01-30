@@ -18,6 +18,16 @@ function setCategoryList(state=[], action){
 }
 
 /////////////////
+// sorts
+function sortPosts(state={by:'timestamp', how:'decrease'}, action){
+  if (action.type === Actions.SORT_POSTS){
+    return action.option;
+  }else{
+    return state;
+  }
+}
+
+/////////////////
 // store posts, add, del, edit post
 function handlePosts(state={}, action){
   // store posts
@@ -36,6 +46,28 @@ function handlePosts(state={}, action){
       id = post.id;
 
   switch (action.type){
+  case Actions.UP_VOTE:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          voteScore: post.voteScore + 1
+        }
+      }
+    };
+  case Actions.DOWN_VOTE:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          voteScore: post.voteScore - 1
+        }
+      }
+    };
   case Actions.NEW_POST:
     // not in predefined category or 'id' conflict
     if ( !(cate in state) || (id in state[cate]) ){
@@ -79,3 +111,4 @@ function handlePosts(state={}, action){
 
 export { setCategoryList as categories };
 export { handlePosts as posts };
+export { sortPosts as sorts };
