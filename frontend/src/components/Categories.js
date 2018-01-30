@@ -6,11 +6,13 @@ import * as ReadAPI from '../utils/api';
 import '../css/Categories.css';
 
 class Categories extends Component{
+  // get categories
   componentDidMount(){
     ReadAPI.getCategories()
       .then(cate => this.props.updateCategories(cate));
   }
 
+  // render categories
   render(){
     return(
       <div className="sidebar">

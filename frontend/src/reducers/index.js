@@ -17,9 +17,20 @@ function setCategoryList(state=[], action){
   }
 }
 
-
-// add, del, edit post
+/////////////////
+// store posts, add, del, edit post
 function handlePosts(state={}, action){
+  // store posts
+  if (action.type === Actions.UPDATE_ALL_POSTS){
+    return action.posts;
+  }else if (action.type === Actions.UPDATE_CATEGORY_POSTS){
+    return {
+      ...state,
+      [action.category]: action.posts
+    };
+  }
+
+  // add, del, edit post
   let post = action.post || {},
       cate = post.category,
       id = post.id;
