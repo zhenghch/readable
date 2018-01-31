@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Actions from '../actions';
-import FaArrowDown from 'react-icons/lib/fa/arrow-down';
-import FaArrowUp from 'react-icons/lib/fa/arrow-up';
-
-
+import FaCaretUp from "react-icons/lib/fa/caret-up";
+import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 function Sorts(props){
   return (
@@ -14,17 +12,17 @@ function Sorts(props){
       <div className="sort">
         timestamp:
         &nbsp;
-        <FaArrowUp onClick={() => props.dispatch(Actions.sortPosts({by: "timestamp", how:"increase"}))} />
+        <FaCaretUp onClick={() => props.dispatch(Actions.sortPosts({by: "timestamp", how:"increase"}))} />
         &nbsp;
-        <FaArrowDown onClick={() => props.dispatch(Actions.sortPosts({by:"timestamp", how:"decrease"}))} />
+        <FaCaretDown onClick={() => props.dispatch(Actions.sortPosts({by:"timestamp", how:"decrease"}))} />
       </div>
 
       <div className="sort">
         voteScore:
         &nbsp;
-        <FaArrowUp onClick={() => props.dispatch(Actions.sortPosts({by: "voteScore", how:"increase"}))} />
+        <FaCaretUp onClick={() => props.dispatch(Actions.sortPosts({by: "voteScore", how:"increase"}))} />
         &nbsp;
-        <FaArrowDown onClick={() => props.dispatch(Actions.sortPosts({by:"voteScore", how:"decrease"}))} />
+        <FaCaretDown onClick={() => props.dispatch(Actions.sortPosts({by:"voteScore", how:"decrease"}))} />
       </div>
     </div>
   );

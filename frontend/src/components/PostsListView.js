@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
-import '../css/Posts.css';
 import FaArrowDown from 'react-icons/lib/fa/arrow-down';
 import FaArrowUp from 'react-icons/lib/fa/arrow-up';
 
@@ -17,11 +16,13 @@ function sortFunc(sorts){
 
 function PostBar(props){
   return (
-    <div>
-      <p>{props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}</p>
-      <div><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
+    <div style={{color: "blue"}}>
+      {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
+      <div style={{color: "rgb(100,100,100)"}}><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
           {props.post.voteScore}
-          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/></div>
+          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
+            &nbsp; &nbsp; {props.post.commentCount} comments
+      </div>
     </div>
   );
 }

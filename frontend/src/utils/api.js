@@ -34,4 +34,15 @@ export const votePost = (id, option) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({option})
-    }).then(res => console.log(res.json()));
+    }).then(res => res.json());
+
+// add a new post
+export const addPost = (post) =>
+  fetch(`${origin}/posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+  }).then(res => res.json());

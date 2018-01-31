@@ -74,6 +74,7 @@ export default {
   listCategory,
   updateAllPosts,
   sortPosts,
+  addPost,
   upVote,
   downVote,
   updateCategoryPosts

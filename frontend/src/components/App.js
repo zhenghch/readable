@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Sidebar } from './Sidebar';
-import { PostsListView } from './Posts';
+import { MainView } from './MainView';
 import '../css/App.css';
-
-import './App.css';
 
 const App = () => (
   <div className="app" >
     <Sidebar/>
-    <PostsListView />
+    <MainView />
   </div>
 );
 
