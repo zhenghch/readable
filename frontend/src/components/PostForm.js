@@ -9,8 +9,7 @@ class PostForm extends Component{
     super(props);
 
     this.state = {
-      post: props.post || {title: '', body: '', author: '', category: ''},
-      type: props.post ? Actions.EDIT_POST : Actions.NEW_POST
+      post: {title: '', body: '', author: '', category: ''}
     };
 
     this.resetState = this.resetState.bind(this);
@@ -19,18 +18,22 @@ class PostForm extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillReceiveProps(props){
+    this.setState({
+      post: props.editmode.edit ? props.editmode.post : {title: '', body: '', author: '', category: ''}
+    });
+  }
+
   resetState(event){
     event.preventDefault();
 
     this.setState({
-      post: this.props.post || {title: '', body: '', author: '', category: ''}
+      post: this.props.editmode.edit ? this.props.editmode.post : {title: '', body: '', author: '', category: ''}
     });
   }
 
   clearAll(){
-    this.setState({
-      post: {title: '', body: '', author: '', category: ''}
-    });
+    this.props.dispatch(Actions.resetEditMode());
   }
 
   handleChange(event, field){
@@ -45,9 +48,16 @@ class PostForm extends Component{
   handleSubmit(event){
     event.preventDefault();
 
-    switch(this.state.type){
-    case Actions.NEW_POST:
-      let post = {
+    let post;
+    if (this.props.editmode.edit){
+      post = this.state.post;
+
+      ReadAPI.editPost(post.id, post.body, post.title)
+        .then(this.props.dispatch(Actions.editPost(post))
+              && this.props.dispatch({type: 'CATEGORIES', payload: {category: post.category}})).then(this.clearAll());
+
+    }else{
+      post = {
         ...this.state.post,
         id: uuid(),
         timestamp: Date.now(),
@@ -56,6 +66,7 @@ class PostForm extends Component{
         deleted: false,
         commentCount: 0
       };
+
       ReadAPI.addPost(post)
         .then(this.props.dispatch(Actions.addPost(post))
               && this.props.dispatch({type: 'CATEGORIES', payload: {category: post.category}})).then(this.clearAll());
@@ -66,15 +77,15 @@ class PostForm extends Component{
     return (
       <form className="mainform" onReset={this.resetState} onSubmit={this.handleSubmit}>
         author:<input type="text"
-                      disabled={this.props.post ? true : false}
+                      disabled={this.props.editmode.edit ? true : false}
                       required
                       value={this.state.post.author}
                       onChange={(event) => this.handleChange(event, 'author')}
                       />
 
         category:
-          <select value={this.state.post.category} required onChange={(event)=>this.handleChange(event, 'category')} disabled={this.props.post ? true : false}>
-          <option value="" >Post to...</option>
+          <select value={this.state.post.category} required onChange={(event)=>this.handleChange(event, 'category')} disabled={this.props.editmode.edit ? true : false}>
+          <option value="" >Post nto...</option>
         {
           this.props.categories.map(
             cate => (
@@ -96,14 +107,16 @@ class PostForm extends Component{
                                   />
         <br/><br/>
         <input type="submit" value="submit"></input>
-        <input type="reset" value="reset"></input>
+        <input type="reset" value="undo"></input>
+        <input type="button" onClick={this.clearAll} value="reset"/>
       </form>
     );
   }
 }
 
-const mapStateToProps = ({categories}) => ({
-  categories
+const mapStateToProps = ({categories, editmode}) => ({
+  categories,
+  editmode
 });
 
 PostForm = connect(mapStateToProps)(PostForm);

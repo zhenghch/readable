@@ -28,6 +28,25 @@ function sortPosts(state={by:'timestamp', how:'decrease'}, action){
 }
 
 /////////////////
+// edit mode
+function editMode(state={edit: false, post: {}}, action){
+  switch(action.type){
+  case Actions.SET_EDIT_MODE:
+    return {
+      edit: true,
+      post: action.post
+    };
+  case Actions.RESET_EDIT_MODE:
+    return {
+      edit: false,
+      post: {}
+    };
+  default:
+    return state;
+  }
+}
+
+/////////////////
 // store posts, add, del, edit post
 function handlePosts(state={}, action){
   // store posts
@@ -109,6 +128,23 @@ function handlePosts(state={}, action){
   }
 }
 
+/////////////////
+// store , add, del, edit comments
+function handleComments(state = {}, action){
+  switch(action.type){
+  case Actions.UPDATE_COMMENTS:
+    return {
+      ...state,
+      [action.postID]: action.comments
+    };
+  default:
+    return state;
+  }
+}
+
+
 export { setCategoryList as categories };
 export { handlePosts as posts };
 export { sortPosts as sorts };
+export { editMode as editmode};
+export { handleComments as comments};

@@ -4,6 +4,8 @@ import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 import FaArrowDown from 'react-icons/lib/fa/arrow-down';
 import FaArrowUp from 'react-icons/lib/fa/arrow-up';
+import Bomb from 'react-icons/lib/fa/bomb';
+import Edit from 'react-icons/lib/fa/edit';
 
 function sortFunc(sorts){
   const by = sorts.by || 'timestamp';
@@ -18,6 +20,8 @@ function PostBar(props){
   return (
     <div style={{color: "blue"}}>
       {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
+      &nbsp; &nbsp; <Edit style={{color: "white"}} onClick={() => props.dispatch(Actions.setEditMode(props.post))}/>
+      &nbsp; &nbsp; <Bomb style={{color: "red"}}/>
       <div style={{color: "rgb(100,100,100)"}}><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
           {props.post.voteScore}
           <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
@@ -31,13 +35,27 @@ PostBar = connect()(PostBar);
 function PostOverview(props){
   return (
     <div>
-      <div className="title">{props.post.title}</div>
+      <a className="title" onClick={() => {
+          if (!(props.post.id in props.comments)){
+            ReadAPI.getComments(props.post.id)
+              .then(commentList =>
+                commentList.reduce((res, curr) => ({
+                  ...res,
+                  [curr.id]: curr
+                }), {})
+                   ).then(comments => props.dispatch(Actions.updateComments(props.post.id, comments)));
+          }
+        }}>{props.post.title}</a>
       <PostBar post={props.post}/>
     </div>
 
   );
 }
 
+const overviewStateToProps = ({comments}) => ({
+  comments
+});
+PostOverview = connect(overviewStateToProps)(PostOverview);
 
 class PostsListView extends Component {
   // get posts

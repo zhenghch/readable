@@ -46,3 +46,27 @@ export const addPost = (post) =>
     },
     body: JSON.stringify(post)
   }).then(res => res.json());
+
+
+// edit post
+export const editPost = (id, body, title) =>
+  fetch(`${origin}/posts/${id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({body, title})
+  }).then(res => res.json());
+
+// get post detail
+export const getPostDetail = (id) =>
+  fetch(`${origin}/posts/${id}`,{
+    headers
+  }).then(res => res.json());
+
+// get all comments of a post
+export const getComments = (postID) =>
+  fetch(`${origin}/posts/${postID}/comments`,{
+    headers
+  }).then(res => res.json());

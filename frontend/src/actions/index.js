@@ -9,7 +9,13 @@ const DOWN_VOTE = 'DOWN_VOTE';
 
 const NEW_POST = 'NEW_POST';
 const DEL_POST = 'DEL_POST';
+
 const EDIT_POST = 'EDIT_POST';
+const SET_EDIT_MODE = 'SET_EDIT_MODE';
+const RESET_EDIT_MODE = 'RESET_EDIT_MODE';
+
+const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
+
 
 const listCategory = (categories) => ({
   type: LIST_CATEGORY,
@@ -59,6 +65,21 @@ const editPost = (post) => ({
   post
 });
 
+const setEditMode = (post) => ({
+  type: SET_EDIT_MODE,
+  post
+});
+
+const resetEditMode = () => ({
+  type: RESET_EDIT_MODE
+});
+
+
+const updateComments = (postID, comments) => ({
+  type: UPDATE_COMMENTS,
+  postID,
+  comments
+});
 
 export default {
   LIST_CATEGORY,
@@ -69,7 +90,12 @@ export default {
   DOWN_VOTE,
   NEW_POST,
   DEL_POST,
+
   EDIT_POST,
+  SET_EDIT_MODE,
+  RESET_EDIT_MODE,
+
+  UPDATE_COMMENTS,
 
   listCategory,
   updateAllPosts,
@@ -77,5 +103,11 @@ export default {
   addPost,
   upVote,
   downVote,
-  updateCategoryPosts
+  updateCategoryPosts,
+
+  editPost,
+  setEditMode,
+  resetEditMode,
+
+  updateComments
 };
