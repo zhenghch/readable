@@ -9,15 +9,13 @@ class PostForm extends Component{
     super(props);
 
     this.state = {
-      title: props.title || '',
-      body: props.body || '',
-      author: props.author || '',
-      category: props.category || '',
-
-      type: props.type || Actions.NEW_POST
+      post: props.post || {title: '', body: '', author: '', category: ''},
+      type: props.post ? Actions.EDIT_POST : Actions.NEW_POST
     };
 
     this.resetState = this.resetState.bind(this);
+    this.clearAll = this.clearAll.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -25,10 +23,22 @@ class PostForm extends Component{
     event.preventDefault();
 
     this.setState({
-      title: this.props.title || '',
-      body: this.props.body || '',
-      author: this.props.author || '',
-      category: this.props.category || ''
+      post: this.props.post || {title: '', body: '', author: '', category: ''}
+    });
+  }
+
+  clearAll(){
+    this.setState({
+      post: {title: '', body: '', author: '', category: ''}
+    });
+  }
+
+  handleChange(event, field){
+    this.setState({
+      post: {
+        ...this.state.post,
+        [field]: event.target.value
+      }
     });
   }
 
@@ -38,19 +48,17 @@ class PostForm extends Component{
     switch(this.state.type){
     case Actions.NEW_POST:
       let post = {
+        ...this.state.post,
         id: uuid(),
         timestamp: Date.now(),
-        title: this.state.title,
-        body: this.state.body,
-        author: this.state.author,
-        category: this.state.category
+        //supp info
+        voteScore: 1,
+        deleted: false,
+        commentCount: 0
       };
-
-
       ReadAPI.addPost(post)
         .then(this.props.dispatch(Actions.addPost(post))
-              && this.props.dispatch({type: 'CATEGORIES', payload: {category: post.category}}));
-
+              && this.props.dispatch({type: 'CATEGORIES', payload: {category: post.category}})).then(this.clearAll());
     }
   }
 
@@ -58,14 +66,14 @@ class PostForm extends Component{
     return (
       <form className="mainform" onReset={this.resetState} onSubmit={this.handleSubmit}>
         author:<input type="text"
-                      disabled={this.props.author ? true : false}
+                      disabled={this.props.post ? true : false}
                       required
-                      value={this.state.author}
-                      onChange={(event) => this.setState({author: event.target.value})}
+                      value={this.state.post.author}
+                      onChange={(event) => this.handleChange(event, 'author')}
                       />
 
         category:
-        <select value={this.state.category} required onChange={(event)=>this.setState({category:event.target.value})} disabled={this.props.category ? true : false}>
+          <select value={this.state.post.category} required onChange={(event)=>this.handleChange(event, 'category')} disabled={this.props.post ? true : false}>
           <option value="" >Post to...</option>
         {
           this.props.categories.map(
@@ -78,13 +86,13 @@ class PostForm extends Component{
         <br/>
         title:<input type="text"
                      required
-                     value={this.state.title}
-                     onChange={(event)=>this.setState({title: event.target.value})}
+                     value={this.state.post.title}
+                     onChange={(event)=>this.handleChange(event, 'title')}
                      />
          <br/>body:<br/><textarea className="input"
                                   required
-                                  value={this.state.body}
-                                  onChange={(event) => this.setState({body: event.target.value})}
+                                  value={this.state.post.body}
+                                  onChange={(event) => this.handleChange(event, 'body')}
                                   />
         <br/><br/>
         <input type="submit" value="submit"></input>
