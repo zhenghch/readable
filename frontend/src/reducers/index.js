@@ -107,7 +107,13 @@ function handlePosts(state={}, action){
     }else{
       return {
         ...state,
-        [cate]: selectPost(state[cate], id, (id, key) => (id !== key))
+        [cate]: {
+          ...state[cate],
+          [id]: {
+            ...post,
+            deleted: true
+          }
+        }
       };
     }
   case Actions.EDIT_POST:
@@ -136,6 +142,14 @@ function handleComments(state = {}, action){
     return {
       ...state,
       [action.postID]: action.comments
+    };
+  case Actions.DEL_POST:
+    console.log(state, action.post.id, state[action.post.id]);
+    return {
+      ...state,
+      [action.post.id]: Object.keys(state[action.post.id]).map(id => state[action.post.id][id]).reduce((res, curr) => (
+        {...res,
+         [curr.id]: {...curr, parentDeleted: true}}), {})
     };
   default:
     return state;

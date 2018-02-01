@@ -59,6 +59,17 @@ export const editPost = (id, body, title) =>
     body: JSON.stringify({body, title})
   }).then(res => res.json());
 
+// del post
+export const delPost = (id)  =>
+  fetch(`${origin}/posts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json());
+
+
 // get post detail
 export const getPostDetail = (id) =>
   fetch(`${origin}/posts/${id}`,{

@@ -101,6 +101,7 @@ export default {
   updateAllPosts,
   sortPosts,
   addPost,
+  delPost,
   upVote,
   downVote,
   updateCategoryPosts,
