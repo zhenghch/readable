@@ -1,0 +1,54 @@
+.postview {
+    width: 100%;
+    height: 40em;
+    border: solid rgb(30,30,30);
+}
+
+.close-post{
+  top:  3em;
+  left: 3em;
+  width: 2em;
+  height: 2em;
+  color: white;
+}
+
+.comment-list {
+  color: rgb(100,100,100);
+  border: 1px solid rgb(0,255,255);
+  box-sizing: border-box;
+  display: block !important;
+  padding: 10px;
+  width: 80%;
+}
+
+.post-title {
+  color: white;
+  font-size: 34px;
+  text-align: left;
+}
+
+.post-content {
+  color: rgb(100,100,100);
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  width: 100%;
+  flex-direction: column;
+}
+
+
+.mainform {
+  color: rgb(100,100,100);
+  border: 2px solid white;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 30%;
+  width: 70%;
+  overflow: scroll;
+}
+
+.input {
+    height: 30%;
+    text-align:left;
+    width: 100%;
+}

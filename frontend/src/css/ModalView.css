@@ -1,0 +1,16 @@
+.modal-form {
+  color: rgb(100,100,100);
+  border: 2px solid white;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100%;
+  width: 50%;
+  background: rgb(0, 0, 0);
+  overflow: scroll;
+}
+
+.modal-input {
+    height: 30%;
+    text-align:left;
+    width: 100%;
+}
