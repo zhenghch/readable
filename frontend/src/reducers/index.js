@@ -160,8 +160,19 @@ function handlePosts(state={}, action){
           commentCount: post.commentCount + 1
         }
       }
+    };
+  case Actions.DEL_COMMENT:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          commentCount: post.commentCount - 1
+        }
+      }
+    };
 
-    }
   default:
     return state;
   }
@@ -205,6 +216,25 @@ function handleComments(state = {}, action){
       [action.comment.parentId]:{
         ...state[action.comment.parentId],
         [action.comment.id]: action.comment
+      }
+    };
+  case Actions.EDIT_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: action.comment
+      }
+    };
+  case Actions.DEL_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: {
+          ...action.comment,
+          deleted: true
+        }
       }
     };
 

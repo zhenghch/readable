@@ -103,3 +103,13 @@ export const addComment = (comment) =>
     },
     body: JSON.stringify(comment)
   }).then(res => res.json());
+
+export const editComment = (comment) =>
+  fetch(`${origin}/comments/${comment.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(comment)
+  })

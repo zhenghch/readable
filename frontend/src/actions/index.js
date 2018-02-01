@@ -17,6 +17,8 @@ const SET_EDIT_MODE = 'SET_EDIT_MODE';
 const RESET_EDIT_MODE = 'RESET_EDIT_MODE';
 
 const ADD_COMMENT = "ADD_COMMENT";
+const EDIT_COMMENT = "EDIT_COMMENT";
+const DEL_COMMENT = 'DEL_COMMENT';
 
 const SET_POST_MODE = 'SET_POST_MODE';
 const RESET_POST_MODE = 'RESET_POST_MODE';
@@ -108,6 +110,17 @@ const addComment = (comment, post) => ({
   post
 });
 
+const editComment = (comment) => ({
+  type: EDIT_COMMENT,
+  comment
+});
+
+const delComment = (comment, post) => ({
+  type: DEL_COMMENT,
+  comment,
+  post
+});
+
 const updateComments = (postID, comments) => ({
   type: UPDATE_COMMENTS,
   postID,
@@ -136,6 +149,8 @@ export default {
   RESET_POST_MODE,
 
   ADD_COMMENT,
+  EDIT_COMMENT,
+  DEL_COMMENT,
 
   UPDATE_COMMENTS,
 
@@ -160,6 +175,8 @@ export default {
   resetPostMode,
 
   addComment,
+  editComment,
+  delComment,
 
   updateComments
 };
