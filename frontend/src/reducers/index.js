@@ -47,6 +47,26 @@ function editMode(state={edit: false, post: {}}, action){
 }
 
 /////////////////
+// post view mode
+function postMode(state={view: false, post: {}}, action){
+  switch(action.type){
+  case Actions.SET_POST_MODE:
+    return {
+      view: true,
+      post: action.post
+    };
+  case Actions.RESET_POST_MODE:
+    return {
+      view: false,
+      post: {}
+    };
+  default:
+    return state;
+  }
+}
+
+
+/////////////////
 // store posts, add, del, edit post
 function handlePosts(state={}, action){
   // store posts
@@ -143,6 +163,38 @@ function handleComments(state = {}, action){
       ...state,
       [action.postID]: action.comments
     };
+  case Actions.UPVOTE_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: {
+          ...action.comment,
+          voteScore: action.comment.voteScore + 1
+        }
+      }
+    };
+  case Actions.DOWNVOTE_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: {
+          ...action.comment,
+          voteScore: action.comment.voteScore - 1
+        }
+      }
+    };
+
+  case Actions.ADD_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]:{
+        ...state[action.comment.parentId],
+        [action.comment.id]: action.comment
+      }
+    };
+
   case Actions.DEL_POST:
     console.log(state, action.post.id, state[action.post.id]);
     return {
@@ -162,3 +214,4 @@ export { handlePosts as posts };
 export { sortPosts as sorts };
 export { editMode as editmode};
 export { handleComments as comments};
+export { postMode as postmode};

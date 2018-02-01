@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { PostBar } from './PostBar';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
-import FaArrowDown from 'react-icons/lib/fa/arrow-down';
-import FaArrowUp from 'react-icons/lib/fa/arrow-up';
+import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
+import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
 import Bomb from 'react-icons/lib/fa/bomb';
 import Edit from 'react-icons/lib/fa/edit';
 
@@ -14,39 +15,6 @@ function sortFunc(sorts){
 
   return (a, b) => cmp(a[by], b[by]);
 }
-
-
-function PostBar(props){
-  return (
-    <div style={{color: "blue"}}>
-      {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
-      &nbsp; &nbsp;
-      <Edit style={{color: "white"}} onClick={() => props.dispatch(Actions.setEditMode(props.post))}/>
-      &nbsp; &nbsp;
-      <Bomb style={{color: "red"}} onClick={() => {
-          if (!(props.post.id in props.comments)){
-            ReadAPI.getComments(props.post.id)
-              .then(commentList =>
-                commentList.reduce((res, curr) => ({
-                  ...res,
-                  [curr.id]: curr
-                }), {}))
-              .then(comments => Promise.all(
-                props.dispatch(Actions.updateComments(props.post.id, comments)),
-                ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)))).then(val => console.log(val), reason => {}));
-          }else{
-            ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)));
-          }
-      }}/>
-      <div style={{color: "rgb(100,100,100)"}}><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
-          {props.post.voteScore}
-          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
-            &nbsp; &nbsp; {props.post.commentCount} comments
-      </div>
-    </div>
-  );
-}
-PostBar = connect(({comments}) => ({comments}))(PostBar);
 
 function PostOverview(props){
   return (
@@ -59,7 +27,16 @@ function PostOverview(props){
                   ...res,
                   [curr.id]: curr
                 }), {})
-                   ).then(comments => props.dispatch(Actions.updateComments(props.post.id, comments)));
+                   ).then(comments => Promise.all(
+                     props.dispatch(Actions.updateComments(props.post.id, comments))),
+                     props.dispatch({type: 'POSTDETAIL', payload: {category: props.post.category, post:props.post.id}}),
+                     props.dispatch(Actions.setPostMode(props.post))
+                         ).then(val => {}, reason => {});
+          }else{
+            Promise.all(
+              props.dispatch({type: 'POSTDETAIL', payload: {category: props.post.category, post:props.post.id}}),
+              props.dispatch(Actions.setPostMode(props.post))
+            ).then(val => {}, reason => {});
           }
         }}>{props.post.title}</a>
       <PostBar post={props.post}/>

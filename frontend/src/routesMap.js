@@ -2,5 +2,6 @@ import { redirect } from 'redux-first-router';
 
 export default {
   HOME: '/',
-  CATEGORIES: '/:category'
+  CATEGORIES: '/:category',
+  POSTDETAIL: '/:category/:post'
 };

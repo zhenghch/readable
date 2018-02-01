@@ -36,6 +36,18 @@ export const votePost = (id, option) =>
     body: JSON.stringify({option})
     }).then(res => res.json());
 
+// up/down vote comment
+export const voteComment = (id, option) =>
+  fetch(`${origin}/comments/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({option})
+    }).then(res => res.json());
+
+
 // add a new post
 export const addPost = (post) =>
   fetch(`${origin}/posts`, {
