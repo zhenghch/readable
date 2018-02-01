@@ -149,6 +149,19 @@ function handlePosts(state={}, action){
         }
       };
     }
+
+  case Actions.ADD_COMMENT:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          commentCount: post.commentCount + 1
+        }
+      }
+
+    }
   default:
     return state;
   }

@@ -102,9 +102,10 @@ const resetPostMode = () => ({
   type: RESET_POST_MODE
 });
 
-const addComment = (comment) => ({
+const addComment = (comment, post) => ({
   type: ADD_COMMENT,
-  comment
+  comment,
+  post
 });
 
 const updateComments = (postID, comments) => ({

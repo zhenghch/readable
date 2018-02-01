@@ -93,3 +93,13 @@ export const getComments = (postID) =>
   fetch(`${origin}/posts/${postID}/comments`,{
     headers
   }).then(res => res.json());
+
+export const addComment = (comment) =>
+  fetch(`${origin}/comments`, {
+    method: 'POST',
+    headers:{
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(comment)
+  }).then(res => res.json());
