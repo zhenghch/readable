@@ -8,7 +8,7 @@
   box-sizing: border-box;
   display: block !important;
   padding: 10px;
-  height: 70%;
+  height: 80%;
   width: 100%;
   overflow: scroll;
 }
@@ -22,20 +22,4 @@
 .title:hover{
   text-decoration: underline;
   background: rgb(80, 43, 48);
-}
-
-.mainform {
-  color: rgb(100,100,100);
-  border: 2px solid white;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 30%;
-  width: 70%;
-  overflow: scroll;
-}
-
-.input {
-    height: 30%;
-    text-align:left;
-    width: 100%;
 }

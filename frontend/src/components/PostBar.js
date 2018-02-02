@@ -12,7 +12,11 @@ function PostBar(props){
     <div style={{color: "blue"}}>
       {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
       &nbsp; &nbsp;
-      <Edit style={{color: "white"}} onClick={() => props.dispatch(Actions.setEditMode(props.post))}/>
+      <Edit style={{color: "white"}} onClick={() => Promise.all(
+          props.dispatch(Actions.activePost(true, {category: props.post.category, id: props.post.id})),
+        props.dispatch(Actions.postModal(true))).then(()=>{}, ()=>{})
+        }/>
+
       &nbsp; &nbsp;
       <Bomb style={{color: "red"}} onClick={() => {
           if (!(props.post.id in props.comments)){

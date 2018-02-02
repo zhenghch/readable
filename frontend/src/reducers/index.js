@@ -1,5 +1,25 @@
 import Actions from '../actions';
 
+function activePost(state={category:'', id:''}, action){
+  if (action.type === Actions.ACTIVE_POST){
+    if (action.active){
+      return action.post;
+    }else{
+      return {category:'', id:''};
+    }
+  }else{
+    return state;
+  }
+}
+
+function postModal(state=false, action){
+  if (action.type === Actions.POST_MODAL){
+    return action.show;
+  }else{
+    return state;
+  }
+}
+
 // helper function to select/filter specific post
 function selectPost(posts, id, func){
   return Object.keys(posts)
@@ -258,3 +278,6 @@ export { sortPosts as sorts };
 export { editMode as editmode};
 export { handleComments as comments};
 export { postMode as postmode};
+//
+export { activePost as activepost };
+export { postModal as postmodal};

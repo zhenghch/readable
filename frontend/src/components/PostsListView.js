@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { PostBar } from './PostBar';
+import { PostModal } from './PostModal';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
+
 import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
 import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
 import Bomb from 'react-icons/lib/fa/bomb';
@@ -86,7 +89,8 @@ class PostsListView extends Component {
           postLists.filter(post=> !post.deleted).sort(cmp).map(post => (
             <PostOverview post={post} key={post.id}/>
           ))
-        }
+      }
+      <PostModal />
       </div>
     );
   }

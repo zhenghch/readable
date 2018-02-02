@@ -1,3 +1,7 @@
+const ACTIVE_POST = 'ACTIVE_POST';
+
+const POST_MODAL = 'POST_MODAL';
+//
 const LIST_CATEGORY = 'LIST_CATEGORY';
 const UPDATE_ALL_POSTS = 'UPDATE_ALL_POSTS';
 const UPDATE_CATEGORY_POSTS = 'UPDATE_CATEGORY_POSTS';
@@ -25,7 +29,21 @@ const RESET_POST_MODE = 'RESET_POST_MODE';
 
 const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
 
+// active/deactive post to control post form display and detail post view
+const activePost = (active=true, post={category:'', id:''}) => ({
+  type: ACTIVE_POST,
+  active,
+  post
+});
 
+// whether to render post modal
+const postModal = (show=false) => ({
+  type: POST_MODAL,
+  show
+});
+
+
+//
 const listCategory = (categories) => ({
   type: LIST_CATEGORY,
   categories
@@ -178,5 +196,11 @@ export default {
   editComment,
   delComment,
 
-  updateComments
+  updateComments,
+  //
+  ACTIVE_POST,
+  activePost,
+
+  POST_MODAL,
+  postModal
 };
