@@ -49,33 +49,23 @@ function PostOverview(props){
 }
 PostOverview = connect(({comments}) => ({comments}))(PostOverview);
 
-class PostsListView extends Component {
-  // get posts
-  componentDidMount(){
-    ReadAPI.getPosts()
-      .then(postLists => {
-        let posts = this.props.categories.reduce((res, curr)=>({...res, [curr.path]:{}}), {});
-        posts = postLists.reduce((res, curr) => ({
-          ...res,
-          [curr.category]: {
-            ...res[curr.category],
-            [curr.id]:curr
-          }
-        }), posts);
-        this.props.updatePosts(posts);
-      });
-  }
-
+function PostsListView(props){
   // render posts
   render(){
     let cate = this.props.payload.category || 'All';
     let posts = this.props.posts;
+
+    // empty posts
+    if (! Object.keys(posts).length){
+      return <div className="list"/>;
+    }
 
     // turn posts dict to posts list
     let postLists = [];
     if (cate === 'All'){
       postLists = Object.keys(posts).reduce((res, cate) => res.concat(Object.keys(posts[cate]).map(id => posts[cate][id])), []);
     }else{
+      console.log(posts);
       postLists = Object.keys(posts[cate])
                         .map(id => posts[cate][id]);
     }
@@ -97,17 +87,12 @@ class PostsListView extends Component {
 }
 
 const mapStateToProps = ({categories, posts, sorts, location }) => ({
-  categories,
   posts,
   sorts,
   payload: location.payload
 });
 
-const mapDispatchToProps = dispatch => ({
-  updatePosts: posts => dispatch(Actions.updateAllPosts(posts))
-});
-
-PostsListView = connect(mapStateToProps, mapDispatchToProps)(PostsListView);
+PostsListView = connect(mapStateToProps)(PostsListView);
 
 export {
   PostsListView

@@ -1,10 +1,25 @@
+// set app's categories
+const SET_CATEGORIES = 'SET_CATEGORIES';
+const setCategories = (categories) => ({
+  type: SET_CATEGORIES,
+  categories
+});
+
+// retrieve all posts at once
+const UPDATE_ALL_POSTS = 'UPDATE_ALL_POSTS';
+const updateAllPosts = (posts) => ({
+  type: UPDATE_ALL_POSTS,
+  posts
+});
+
+//
 const ACTIVE_POST = 'ACTIVE_POST';
 
 const POST_MODAL = 'POST_MODAL';
 const DETAIL_MODE = 'DETAIL_MODE';
 //
-const LIST_CATEGORY = 'LIST_CATEGORY';
-const UPDATE_ALL_POSTS = 'UPDATE_ALL_POSTS';
+
+
 const UPDATE_CATEGORY_POSTS = 'UPDATE_CATEGORY_POSTS';
 
 const SORT_POSTS = 'SORT_POSTS';
@@ -45,15 +60,7 @@ const detailMode = (show=false)  => ({
 });
 
 //
-const listCategory = (categories) => ({
-  type: LIST_CATEGORY,
-  categories
-});
 
-const updateAllPosts = (posts) => ({
-  type: UPDATE_ALL_POSTS,
-  posts
-});
 
 const updateCategoryPosts = (cate, posts) => ({
   type: UPDATE_CATEGORY_POSTS,
@@ -128,8 +135,12 @@ const updateComments = (postID, comments) => ({
 });
 
 export default {
-  LIST_CATEGORY,
+  SET_CATEGORIES,
+  setCategories,
+
   UPDATE_ALL_POSTS,
+  updateAllPosts,
+
   UPDATE_CATEGORY_POSTS,
   SORT_POSTS,
 
@@ -149,8 +160,6 @@ export default {
 
   UPDATE_COMMENTS,
 
-  listCategory,
-  updateAllPosts,
   sortPosts,
   addPost,
   delPost,

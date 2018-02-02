@@ -14,14 +14,19 @@ const headers = {
 };
 
 // return list of categories
-export const getCategories = () =>
+export const getCategories = async () =>
   fetch(`${origin}/categories`, { headers })
   .then(res => res.json())
   .then(data => data.categories);
 
 // return all posts
-export const getPosts = () =>
+export const getAllPosts = () =>
   fetch(`${origin}/posts`, { headers })
+  .then(res => res.json());
+
+// return post of particular category
+export const getPost = async (category) =>
+  fetch(`${origin}/${category}/posts/`, { headers})
   .then(res => res.json());
 
 

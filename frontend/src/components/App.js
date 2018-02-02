@@ -7,8 +7,11 @@ import '../css/App.css';
 const App = () => (
   <div className="app" >
     <Sidebar/>
+
     <MainView />
+    {/*
     <PostView />
+    */}
   </div>
 );
 

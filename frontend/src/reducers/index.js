@@ -37,8 +37,8 @@ function selectPost(posts, id, func){
 
 /////////////////
 // store categories into store
-function setCategoryList(state=[], action){
-  if (action.type === Actions.LIST_CATEGORY){
+function setCategories(state=[], action){
+  if (action.type === Actions.SET_CATEGORIES){
     return action.categories;
   }else{
     return state;
@@ -242,7 +242,7 @@ function handleComments(state = {}, action){
 }
 
 
-export { setCategoryList as categories };
+export { setCategories as categories };
 export { handlePosts as posts };
 export { sortPosts as sorts };
 export { handleComments as comments};
