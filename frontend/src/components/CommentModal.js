@@ -89,8 +89,7 @@ class CommentModal extends Component{
       };
 
       ReadAPI.addComment(comment_)
-        .then(this.props.dispatch(Actions.addComment(comment_, post)))
-        .then(this.closeModal());
+        .then(this.props.dispatch(Actions.addComment(comment_, post)));
     }else{
       let comment_ = {
         ...this.props.comment,
@@ -98,9 +97,9 @@ class CommentModal extends Component{
       };
 
       ReadAPI.editComment(comment_)
-        .then(this.props.dispatch(Actions.editComment(comment_)))
-        .then(this.closeModal());
+        .then(this.props.dispatch(Actions.editComment(comment_)));
     }
+    this.closeModal();
   }
 
 
@@ -117,7 +116,7 @@ class CommentModal extends Component{
   render(){
     const {isOpen, label, post, comment, newComment} = this.state;
     let parentId = post.id;
-    console.log(comment);
+
     return (
       <Modal
         className='modal-form'

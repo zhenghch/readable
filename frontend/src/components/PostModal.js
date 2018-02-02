@@ -98,7 +98,7 @@ class PostModal extends Component{
         ...post,
         ...this.state
       };
-      console.log(post.body, post.title);
+
       ReadAPI.editPost(post.id, post.body, post.title)
         .then(this.props.dispatch(Actions.editPost(post)));
     }

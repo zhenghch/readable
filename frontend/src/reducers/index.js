@@ -20,6 +20,14 @@ function postModal(state=false, action){
   }
 }
 
+function detailMode(state=false, action){
+  if (action.type === Actions.DETAIL_MODE){
+    return action.show;
+  }else{
+    return state;
+  }
+}
+
 // helper function to select/filter specific post
 function selectPost(posts, id, func){
   return Object.keys(posts)
@@ -43,44 +51,6 @@ function sortPosts(state={by:'timestamp', how:'decrease'}, action){
   if (action.type === Actions.SORT_POSTS){
     return action.option;
   }else{
-    return state;
-  }
-}
-
-/////////////////
-// edit mode
-function editMode(state={edit: false, post: {}}, action){
-  switch(action.type){
-  case Actions.SET_EDIT_MODE:
-    return {
-      edit: true,
-      post: action.post
-    };
-  case Actions.RESET_EDIT_MODE:
-    return {
-      edit: false,
-      post: {}
-    };
-  default:
-    return state;
-  }
-}
-
-/////////////////
-// post view mode
-function postMode(state={view: false, post: {}}, action){
-  switch(action.type){
-  case Actions.SET_POST_MODE:
-    return {
-      view: true,
-      post: action.post
-    };
-  case Actions.RESET_POST_MODE:
-    return {
-      view: false,
-      post: {}
-    };
-  default:
     return state;
   }
 }
@@ -275,9 +245,8 @@ function handleComments(state = {}, action){
 export { setCategoryList as categories };
 export { handlePosts as posts };
 export { sortPosts as sorts };
-export { editMode as editmode};
 export { handleComments as comments};
-export { postMode as postmode};
 //
 export { activePost as activepost };
 export { postModal as postmodal};
+export { detailMode as detailmode};

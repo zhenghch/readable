@@ -32,13 +32,13 @@ function PostOverview(props){
                 }), {})
                    ).then(comments => Promise.all(
                      props.dispatch(Actions.updateComments(props.post.id, comments))),
-                     props.dispatch({type: 'POSTDETAIL', payload: {category: props.post.category, post:props.post.id}}),
-                     props.dispatch(Actions.setPostMode(props.post))
-                         ).then(val => {}, reason => {});
+                     props.dispatch(Actions.activePost(true, props.post)),
+                     props.dispatch(Actions.detailMode(true),)
+                   ).then(val => {}, reason => {});
           }else{
             Promise.all(
-              props.dispatch({type: 'POSTDETAIL', payload: {category: props.post.category, post:props.post.id}}),
-              props.dispatch(Actions.setPostMode(props.post))
+              props.dispatch(Actions.activePost(true, props.post)),
+              props.dispatch(Actions.detailMode(true),)
             ).then(val => {}, reason => {});
           }
         }}>{props.post.title}</a>

@@ -43,18 +43,20 @@ class PostView extends Component{
   }
 
   render (){
-    if (! this.props.postmode.view){
+    const {active} = this.props;
+    if (! (this.props.show && active.id.length>0)){
       return <div/>;
     }
 
-    let post = this.props.postmode.post;
+
+    let post = this.props.posts[active.category][active.id];
     let comments = this.props.comments[post.id] || {};
 
     return (
       <div className="postview">
         <Close
           className="close-post"
-          onClick={() => Promise.all(this.props.dispatch(Actions.resetPostMode()), this.props.dispatch({type:'CATEGORIES', payload: {category: post.category}})).then(()=>{}, ()=>{})}
+          onClick={() => Promise.all(this.props.dispatch(Actions.detailMode(false)), this.props.dispatch(Actions.activePost(false))).then(()=>{}, ()=>{})}
           >Close</Close>
 
         <p className="post-title">{post.title}</p>
@@ -80,9 +82,11 @@ class PostView extends Component{
   }
 }
 
-const mapStateToProps = ({postmode, comments}) => ({
-  postmode,
-  comments
+const mapStateToProps = state => ({
+  show: state.detailmode,
+  active: state.activepost,
+  comments: state.comments,
+  posts: state.posts
 });
 
 PostView = connect(mapStateToProps)(PostView);
@@ -90,113 +94,3 @@ PostView = connect(mapStateToProps)(PostView);
 export {
   PostView
 }
-
-//function sortFunc(sorts){
-//  const by = sorts.by || 'timestamp';
-//  const how = sorts.how || 'decrease';
-
-//                commentList.reduce((res, curr) => ({
-//                  ...res,
-//                  [curr.id]: curr
-//                }), {}))
-//              .then(comments => Promise.all(
-//                props.dispatch(Actions.updateComments(props.post.id, comments)),
-//                ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)))).then(val => console.log(val), reason => {}));
-//          }else{
-//            ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)));
-//          }
-//      }}/>
-//      <div style={{color: "rgb(100,100,100)"}}><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
-//          {props.post.voteScore}
-//          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
-//            &nbsp; &nbsp; {props.post.commentCount} comments
-//      </div>
-//    </div>
-//  );
-//}
-//PostBar = connect(({comments}) => ({comments}))(PostBar);
-//
-//function PostOverview(props){
-//  return (
-//    <div>
-//      <a className="title" onClick={() => {
-//          if (!(props.post.id in props.comments)){
-//            ReadAPI.getComments(props.post.id)
-//              .then(commentList =>
-//                commentList.reduce((res, curr) => ({
-//                  ...res,
-//                  [curr.id]: curr
-//                }), {})
-//                   ).then(comments => props.dispatch(Actions.updateComments(props.post.id, comments)));
-//          }
-//        }}>{props.post.title}</a>
-//      <PostBar post={props.post}/>
-//    </div>
-//
-//  );
-//}
-//PostOverview = connect(({comments}) => ({comments}))(PostOverview);
-//
-//class PostsListView extends Component {
-//  // get posts
-//  componentDidMount(){
-//    ReadAPI.getPosts()
-//      .then(postLists => {
-//        let posts = this.props.categories.reduce((res, curr)=>({...res, [curr.path]:{}}), {});
-//        posts = postLists.reduce((res, curr) => ({
-//          ...res,
-//          [curr.category]: {
-//            ...res[curr.category],
-//            [curr.id]:curr
-//          }
-//        }), posts);
-//        this.props.updatePosts(posts);
-//      });
-//  }
-//
-//  // render posts
-//  render(){
-//    let cate = this.props.payload.category || 'All';
-//    let posts = this.props.posts;
-//
-//    // turn posts dict to posts list
-//    let postLists = [];
-//    if (cate === 'All'){
-//      postLists = Object.keys(posts).reduce((res, cate) => res.concat(Object.keys(posts[cate]).map(id => posts[cate][id])), []);
-//    }else{
-//      postLists = Object.keys(posts[cate])
-//                        .map(id => posts[cate][id]);
-//    }
-//
-//    // sort posts
-//    let cmp = sortFunc(this.props.sorts);
-//
-//    return (
-//      <div className="list">
-//        {
-//          postLists.filter(post=> !post.deleted).sort(cmp).map(post => (
-//            <PostOverview post={post} key={post.id}/>
-//          ))
-//        }
-//      </div>
-//    );
-//  }
-//}
-//
-//const mapStateToProps = ({categories, posts, sorts, location }) => ({
-//  categories,
-//  posts,
-//  sorts,
-//  payload: location.payload
-//});
-//
-//const mapDispatchToProps = dispatch => ({
-//  updatePosts: posts => dispatch(Actions.updateAllPosts(posts))
-//});
-//
-//PostsListView = connect(mapStateToProps, mapDispatchToProps)(PostsListView);
-//
-//export {
-//  PostsListView
-//};
-//

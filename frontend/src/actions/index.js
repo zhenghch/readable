@@ -1,6 +1,7 @@
 const ACTIVE_POST = 'ACTIVE_POST';
 
 const POST_MODAL = 'POST_MODAL';
+const DETAIL_MODE = 'DETAIL_MODE';
 //
 const LIST_CATEGORY = 'LIST_CATEGORY';
 const UPDATE_ALL_POSTS = 'UPDATE_ALL_POSTS';
@@ -17,15 +18,10 @@ const NEW_POST = 'NEW_POST';
 const DEL_POST = 'DEL_POST';
 
 const EDIT_POST = 'EDIT_POST';
-const SET_EDIT_MODE = 'SET_EDIT_MODE';
-const RESET_EDIT_MODE = 'RESET_EDIT_MODE';
 
 const ADD_COMMENT = "ADD_COMMENT";
 const EDIT_COMMENT = "EDIT_COMMENT";
 const DEL_COMMENT = 'DEL_COMMENT';
-
-const SET_POST_MODE = 'SET_POST_MODE';
-const RESET_POST_MODE = 'RESET_POST_MODE';
 
 const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
 
@@ -33,7 +29,7 @@ const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
 const activePost = (active=true, post={category:'', id:''}) => ({
   type: ACTIVE_POST,
   active,
-  post
+  post: {category: post.category, id: post.id}
 });
 
 // whether to render post modal
@@ -42,6 +38,11 @@ const postModal = (show=false) => ({
   show
 });
 
+// whether to show detail of post
+const detailMode = (show=false)  => ({
+  type: DETAIL_MODE,
+  show
+});
 
 //
 const listCategory = (categories) => ({
@@ -103,25 +104,6 @@ const editPost = (post) => ({
   post
 });
 
-const setEditMode = (post) => ({
-  type: SET_EDIT_MODE,
-  post
-});
-
-const resetEditMode = () => ({
-  type: RESET_EDIT_MODE
-});
-
-
-const setPostMode = (post) => ({
-  type: SET_POST_MODE,
-  post
-});
-
-const resetPostMode = () => ({
-  type: RESET_POST_MODE
-});
-
 const addComment = (comment, post) => ({
   type: ADD_COMMENT,
   comment,
@@ -160,11 +142,6 @@ export default {
   DEL_POST,
 
   EDIT_POST,
-  SET_EDIT_MODE,
-  RESET_EDIT_MODE,
-
-  SET_POST_MODE,
-  RESET_POST_MODE,
 
   ADD_COMMENT,
   EDIT_COMMENT,
@@ -186,11 +163,6 @@ export default {
   updateCategoryPosts,
 
   editPost,
-  setEditMode,
-  resetEditMode,
-
-  setPostMode,
-  resetPostMode,
 
   addComment,
   editComment,
@@ -202,5 +174,8 @@ export default {
   activePost,
 
   POST_MODAL,
-  postModal
+  postModal,
+
+  DETAIL_MODE,
+  detailMode
 };
