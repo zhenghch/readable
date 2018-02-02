@@ -44,11 +44,13 @@ export default {
       const {
         location: { payload: { category }}
       } = getState();
-
+      console.log('hh');
       const {categories, posts} = await initApp(dispatch, getState);
 
-      if (! (category in posts)){
-        return dispatch({type: NOT_FOUND});
+
+      if (! (category in posts)){ // redirect url to home page if category no-exist
+        const action = redirect({type: 'HOME'});
+        dispatch(action);
       }
     }
   }
