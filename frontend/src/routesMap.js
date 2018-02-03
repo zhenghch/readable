@@ -35,7 +35,7 @@ const initApp = async (dispatch, getState) => {
 export default {
   HOME: {
     path: '/',
-    thunk: initApp,
+    thunk: initApp
   },
 
   CATEGORY: {
@@ -53,5 +53,7 @@ export default {
         dispatch(action);
       }
     }
-  }
+  },
+
+  NEWPOST: '/newpost'
 };

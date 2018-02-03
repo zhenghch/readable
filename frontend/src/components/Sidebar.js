@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'redux-first-router-link';
 
 import Actions from '../actions';
 import { Categories } from './Categories';
@@ -9,7 +10,10 @@ import '../css/Sidebar.css';
 
 function NewPost(props){
   return (
-    <button style={{background:"black", color:"white"}} onClick={()=>props.dispatch(Actions.postModal(true))}>Click to post</button>
+    <NavLink
+      to={{type: 'NEWPOST'}}
+      style={{color:'rgb(0,255,255)'}}
+      >Click to post</NavLink>
   );
 }
 NewPost = connect()(NewPost);

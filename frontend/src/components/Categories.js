@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Link, { NavLink} from 'redux-first-router-link';
 
-
 function Categories(props){
   return(
     <div>
       <h2>Categories</h2>
 
       <Link to='/'>
-        All
+        HOME
       </Link>
 
       {
@@ -23,8 +22,6 @@ function Categories(props){
       </div>
   );
 }
-
-
 
 const mapStateToProps = ({categories, location }) => ({
   categories,

@@ -17,18 +17,20 @@ function sortFunc(sorts){
 
 //
 function ListView(props){
-  // render posts
-  let cate = props.payload.category || 'All';
-  let posts = props.posts;
+  // post list view
+  const {type, payload} = props.location;
 
-  // empty posts or non-exist categories
-  if (! ((Object.keys(posts).length) && (cate ==='All' || cate in posts))){
+  if (type !== 'HOME' && type !== 'CATEGORY'){
     return <div className="list"/>;
   }
 
+  //
+  let cate = payload.category || 'HOME';
+  let posts = props.posts;
+
   // turn posts dict to posts list
   let postLists = [];
-  if (cate === 'All'){
+  if (cate === 'HOME'){
     postLists = Object.keys(posts).reduce((res, cate) => res.concat(Object.keys(posts[cate]).map(id => posts[cate][id])), []);
   }else{
     console.log(posts);
@@ -54,7 +56,7 @@ function ListView(props){
 const mapStateToProps = ({posts, sorts, location }) => ({
   posts,
   sorts,
-  payload: location.payload
+  location
 });
 
 ListView = connect(mapStateToProps)(ListView);
