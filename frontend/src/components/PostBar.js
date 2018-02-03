@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
+
 import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
 import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
 import Bomb from 'react-icons/lib/fa/bomb';
@@ -12,10 +13,7 @@ function PostBar(props){
     <div style={{color: "blue"}}>
       {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
       &nbsp; &nbsp;
-      <Edit style={{color: "white"}} onClick={() => Promise.all(
-          props.dispatch(Actions.activePost(true, {category: props.post.category, id: props.post.id})),
-        props.dispatch(Actions.postModal(true))).then(()=>{}, ()=>{})
-        }/>
+      <Edit style={{color: "white"}} onClick={() => props.dispatch({type: 'POSTEDIT', payload:{category:props.post.category, id:props.post.id}}) }/>
 
       &nbsp; &nbsp;
       <Bomb style={{color: "red"}} onClick={() => {

@@ -2,6 +2,7 @@ import { redirect, NOT_FOUND } from 'redux-first-router';
 import * as ReadAPI from './utils/api';
 import Actions from './actions';
 
+// initapp
 const initApp = async (dispatch, getState) => {
   const { categories, posts, comments } = getState();
 
@@ -32,6 +33,35 @@ const initApp = async (dispatch, getState) => {
   return {categories:cates, posts: postSet, comments};
 };
 
+// retrieve comments
+const getComments = async (dispatch, getState) =>{
+  const {
+    location: { payload: {category, id}}
+  } = getState();
+
+  const {categories, posts, comments} = await initApp(dispatch, getState);
+
+  // redirect url to home page if  no-exist
+  if (! ((category in posts) && (id in posts[category]))){
+    const action = redirect({type: 'HOME'});
+    dispatch(action);
+  }
+
+  // update comment
+  if (id in comments){
+    return;
+  }else{
+    let commentList = await ReadAPI.getComments(id);
+    let commentSet =
+        commentList.reduce((res, curr) => ({
+          ...res,
+          [curr.id]: curr
+        }), {});
+
+    dispatch(Actions.updateComments(id, comments));
+  }
+};
+
 export default {
   HOME: {
     path: '/',
@@ -55,40 +85,18 @@ export default {
   },
 
   POSTNEW: {
-    path: '/post/postnew',
+    path: '/post/new',
     thunk: initApp
+  },
+
+
+  POSTEDIT: {
+    path: '/post/edit/:category/:id',
+    thunk: getComments
   },
 
   POSTDETAIL:{
     path: '/post/detail/:category/:id',
-    thunk: async (dispatch, getState) => {
-      const {
-        location: { payload: {category, id}}
-      } = getState();
-
-      const {categories, posts, comments} = await initApp(dispatch, getState);
-
-      // redirect url to home page if category no-exist
-      console.log(id, category);
-      if (! ((category in posts) && (id in posts[category]))){
-        const action = redirect({type: 'HOME'});
-        dispatch(action);
-      }
-
-      // update comment
-      if (id in comments){
-        return;
-      }else{
-        let commentList = await ReadAPI.getComments(id);
-        let commentSet =
-            commentList.reduce((res, curr) => ({
-              ...res,
-              [curr.id]: curr
-            }), {});
-
-        dispatch(Actions.updateComments(id, comments));
-      }
-    }
-
+    thunk: getComments
   }
 };

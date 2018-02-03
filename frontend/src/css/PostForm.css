@@ -1,0 +1,15 @@
+.post-form {
+  color: rgb(100,100,100);
+  box-sizing: border-box;
+  padding: 10px;
+  height: 20em;
+  width: 80%;
+  background: black;
+  overflow: scroll;
+}
+
+.post-input {
+    height: 30%;
+    text-align:left;
+    width: 100%;
+}

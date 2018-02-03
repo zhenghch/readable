@@ -29,15 +29,17 @@ class PostForm extends Component{
   }
 
   storePropsToState(props){
-    const type = props.location.type;
+    const {type, payload} = props.location;
     let post, postnew, show;
 
     if (type === 'POSTNEW'){
       post = {title: '', body:'', author:'', category: ''};
       postnew = true;
       show=true;
-    }else if (type === 'EDITPOST'){
-
+    }else if (type === 'POSTEDIT'){
+      post = Object.keys(props.posts).length ? props.posts[payload.category][payload.id]: {title: '', body:'', author:'', category: ''};
+      postnew=false;
+      show=true;
     }else{
       show=false;
     }
