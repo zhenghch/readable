@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'redux-first-router-link';
 
 import { PostBar } from './PostBar';
 import Actions from '../actions';
@@ -14,26 +15,9 @@ import Edit from 'react-icons/lib/fa/edit';
 function PostOverview(props){
   return (
     <div>
-      <a className="title" onClick={() => {
-          if (!(props.post.id in props.comments)){
-            ReadAPI.getComments(props.post.id)
-              .then(commentList =>
-                commentList.reduce((res, curr) => ({
-                  ...res,
-                  [curr.id]: curr
-                }), {})
-                   ).then(comments => Promise.all(
-                     props.dispatch(Actions.updateComments(props.post.id, comments))),
-                     props.dispatch(Actions.activePost(true, props.post)),
-                     props.dispatch(Actions.detailMode(true),)
-                   ).then(val => {}, reason => {});
-          }else{
-            Promise.all(
-              props.dispatch(Actions.activePost(true, props.post)),
-              props.dispatch(Actions.detailMode(true),)
-            ).then(val => {}, reason => {});
-          }
-        }}>{props.post.title}</a>
+      <NavLink className="title"
+               to={{type:'POSTDETAIL', payload:{category: props.post.category, id:props.post.id}}}
+               >{props.post.title}</NavLink>
       <PostBar post={props.post}/>
     </div>
 

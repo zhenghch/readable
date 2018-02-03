@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Sidebar } from './Sidebar';
 import { ListView } from './ListView';
+import { PostForm } from './PostForm';
 import { PostView } from './PostView';
 import '../css/App.css';
 
@@ -9,9 +10,8 @@ const App = () => (
     <Sidebar/>
 
     <ListView />
-    {/*
+    <PostForm />
     <PostView />
-    */}
   </div>
 );
 

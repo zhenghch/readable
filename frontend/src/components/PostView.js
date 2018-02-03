@@ -6,6 +6,7 @@ import { PostBar } from './PostBar';
 import { CommentModal } from './CommentModal';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
+
 import Close from 'react-icons/lib/fa/arrow-left';
 import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
 import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
@@ -23,7 +24,7 @@ function CommentBar(props){
       <div style={{color: "rgb(255,255,255)"}}>
         <FaArrowUp onClick={() => ReadAPI.voteComment(props.comment.id,"upVote").then(props.dispatch(Actions.upVoteComment(props.comment)))}/>
       {props.comment.voteScore}
-        <FaArrowDown onClick={() => ReadAPI.voteComment(props.comment.id, "downVote").then(props.dispatch(Actions.downVoteComment(props.comment)))}/>
+        <FaArrowDown onClick={() => ReadAPI.voteComment(props.comment.id, "downVote").thennnn(props.dispatch(Actions.downVoteComment(props.comment)))}/>
       </div>
     </div>
 
@@ -36,27 +37,53 @@ class PostView extends Component{
     super();
 
     this.state = {
-      showModal: false,
-      label: '',
-      comment: {}
+      show: false,
+      showModal: false
     };
+
+    this.close = this.close.bind(this);
+
+  }
+
+  componentWillReceiveProps(props){
+    const type = props.location.type;
+    let show;
+
+    if (type === 'POSTDETAIL'){
+      show=true;
+    }else{
+      show=false;
+    }
+
+    this.setState({
+      show
+    });
+  }
+
+  close(){
+    let prev = this.props.location.prev;
+    if (prev.type.length===0){ // to homepage if not prev history
+      prev.type = 'HOME';
+    }
+
+    this.props.dispatch({type:prev.type, payload: prev.payload});
   }
 
   render (){
-    const {active} = this.props;
-    if (! (this.props.show && active.id.length>0)){
+    if (!this.state.show){
       return <div/>;
     }
 
+    const {category, id} = this.props.location.payload;
 
-    let post = this.props.posts[active.category][active.id];
-    let comments = this.props.comments[post.id] || {};
+    let post = this.props.posts[category][id];
+    let comments = this.props.comments[id] || {};
 
     return (
       <div className="postview">
         <Close
           className="close-post"
-          onClick={() => Promise.all(this.props.dispatch(Actions.detailMode(false)), this.props.dispatch(Actions.activePost(false))).then(()=>{}, ()=>{})}
+          onClick={this.close}
           >Close</Close>
 
         <p className="post-title">{post.title}</p>
@@ -83,9 +110,8 @@ class PostView extends Component{
 }
 
 const mapStateToProps = state => ({
-  show: state.detailmode,
-  active: state.activepost,
   comments: state.comments,
+  location: state.location,
   posts: state.posts
 });
 

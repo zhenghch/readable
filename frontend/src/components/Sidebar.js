@@ -11,7 +11,7 @@ import '../css/Sidebar.css';
 function NewPost(props){
   return (
     <NavLink
-      to={{type: 'NEWPOST'}}
+      to={{type: 'POSTNEW'}}
       style={{color:'rgb(0,255,255)'}}
       >Click to post</NavLink>
   );

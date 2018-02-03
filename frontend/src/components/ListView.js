@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { PostOverview } from './PostOverview';
-import { PostModal } from './PostModal';
 
 import '../css/ListView.css';
 
@@ -19,21 +18,19 @@ function sortFunc(sorts){
 function ListView(props){
   // post list view
   const {type, payload} = props.location;
-
-  if (type !== 'HOME' && type !== 'CATEGORY'){
-    return <div className="list"/>;
-  }
-
-  //
-  let cate = payload.category || 'HOME';
   let posts = props.posts;
+  let cate = payload.category || 'HOME';
+
+  if ((type !== 'HOME' && type !== 'CATEGORY') || Object.keys(posts).length===0){
+    return <div />;
+  }
 
   // turn posts dict to posts list
   let postLists = [];
   if (cate === 'HOME'){
     postLists = Object.keys(posts).reduce((res, cate) => res.concat(Object.keys(posts[cate]).map(id => posts[cate][id])), []);
   }else{
-    console.log(posts);
+
     postLists = Object.keys(posts[cate])
       .map(id => posts[cate][id]);
   }
@@ -48,7 +45,6 @@ function ListView(props){
           <PostOverview post={post} key={post.id}/>
         ))
     }
-      <PostModal />
    </div>
   );
 }

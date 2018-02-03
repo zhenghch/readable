@@ -7,7 +7,7 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 function Sorts(props){
   return (
     <div>
-      <h2>Sorted by</h2>
+      <h2>Sorted by {props.sorts.by}: {props.sorts.how}</h2>
 
       <div className="sort">
         timestamp:
@@ -27,7 +27,7 @@ function Sorts(props){
     </div>
   );
 }
-Sorts = connect()(Sorts);
+Sorts = connect(({sorts}) => ({sorts}))(Sorts);
 
 export  {
   Sorts

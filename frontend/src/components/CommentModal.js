@@ -4,7 +4,7 @@ import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 import Modal from 'react-modal';
 import { v1 as uuid} from 'uuid';
-import '../css/ModalView.css';
+import '../css/PostForm.css';
 
 class CommentModal extends Component{
   constructor(){
