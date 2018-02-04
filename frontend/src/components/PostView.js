@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactModal from 'react-modal';
 
 import { PostBar } from './PostBar';
-import { CommentModal } from './CommentModal';
+import { CommentBar } from './CommentBar';
+
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 
@@ -14,31 +14,15 @@ import Bomb from 'react-icons/lib/fa/bomb';
 import Edit from 'react-icons/lib/fa/edit';
 import Reply from 'react-icons/lib/fa/mail-reply';
 
-
 import '../css/PostView.css';
 
-function CommentBar(props){
-  return (
-    <div style={{color: "blue"}}>
-      {props.comment.author} @ {(new Date(props.comment.timestamp)).toDateString()}
-      <div style={{color: "rgb(255,255,255)"}}>
-        <FaArrowUp onClick={() => ReadAPI.voteComment(props.comment.id,"upVote").then(props.dispatch(Actions.upVoteComment(props.comment)))}/>
-      {props.comment.voteScore}
-        <FaArrowDown onClick={() => ReadAPI.voteComment(props.comment.id, "downVote").thennnn(props.dispatch(Actions.downVoteComment(props.comment)))}/>
-      </div>
-    </div>
-
-  );
-}
-CommentBar = connect()(CommentBar);
 
 class PostView extends Component{
   constructor(){
     super();
 
     this.state = {
-      show: false,
-      showModal: false
+      show: false
     };
 
     this.close = this.close.bind(this);
@@ -66,7 +50,7 @@ class PostView extends Component{
       prev.type = 'HOME';
     }
 
-    this.props.dispatch({type:prev.type, payload: prev.payload});
+    this.props.dispatch({type:'CATEGORY', payload: prev.payload});
   }
 
   render (){
@@ -89,21 +73,17 @@ class PostView extends Component{
         <p className="post-title">{post.title}</p>
         <p className="post-content">{post.body}</p>
         <PostBar post={post}/>
-        <Reply onClick={()=>this.setState({showModal:true, label:`reply to ${post.title}`})}/>
-
         <div >
           {
             Object.keys(comments).filter(id => !comments[id].deleted).map(id => comments[id]).map(comment => (
               <div className="comment-list" key={comment.id}>
                 <p>{comment.body}</p>
-                <CommentBar comment={comment}/>
-                <Edit onClick={()=>this.setState({showModal:true, label:'edit comment', comment:comment})}/>
-                  <Bomb onClick={()=>this.props.dispatch(Actions.delComment(comment, post))}/>
+                <CommentBar comment={comment} post={post}/>
               </div>
             ))
           }
         </div>
-        <CommentModal isOpen={this.state.showModal} label={this.state.label} post={post} comment={this.state.comment}/>
+
       </div>
     );
   }

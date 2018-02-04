@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'redux-first-router-link';
 
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
@@ -8,11 +9,15 @@ import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
 import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
 import Bomb from 'react-icons/lib/fa/bomb';
 import Edit from 'react-icons/lib/fa/edit';
+import Reply from 'react-icons/lib/fa/mail-reply';
 
 function PostBar(props){
   return (
     <div style={{color: "blue"}}>
       {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
+      &nbsp; &nbsp;
+      <Reply style={{color: 'rgb(0,255,255)'}} onClick={()=>props.dispatch({type:'COMMENTNEW', payload:{category: props.post.category, id: props.post.id}})}/>
+
       &nbsp; &nbsp;
       <Edit style={{color: "white"}} onClick={() => props.dispatch({type: 'POSTEDIT', payload:{category:props.post.category, id:props.post.id}}) }/>
 
@@ -28,7 +33,7 @@ function PostBar(props){
     </div>
   );
 }
-PostBar = connect(({comments}) => ({comments}))(PostBar);
+PostBar = connect()(PostBar);
 
 export {
   PostBar

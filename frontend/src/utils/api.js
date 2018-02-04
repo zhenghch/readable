@@ -117,4 +117,10 @@ export const editComment = (comment) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(comment)
-  })
+  });
+
+export const delComment = (id) =>
+  fetch(`${origin}/comments/${id}`, {
+    method: 'DELETE',
+    headers
+  });

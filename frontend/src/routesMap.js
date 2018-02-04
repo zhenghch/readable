@@ -58,7 +58,7 @@ const getComments = async (dispatch, getState) =>{
           [curr.id]: curr
         }), {});
 
-    dispatch(Actions.updateComments(id, comments));
+    dispatch(Actions.updateComments(id, commentSet));
   }
 };
 
@@ -127,6 +127,66 @@ export default {
       }
       dispatch(action);
     }
-  }
+  },
 
+  COMMENTNEW:{
+    path: '/comment/new/:category/:id/',
+    thunk: getComments
+  },
+
+  COMMENTEDIT:{
+    path: '/comment/edit/:category/:id/:commentId',
+    thunk: async (dispatch, getState) => {
+      await getComments(dispatch, getState);
+
+      const {
+        location,
+        posts,
+        comments
+      } = getState();
+
+      const {category, id, commentId} = location.payload;
+      // redirect url to home page if  no-exist
+      if (! (id in comments && commentId in comments[id])){
+        const action = redirect({type: 'HOME'});
+        dispatch(action);
+      }
+    }
+  },
+
+  COMMENTDELETE:{
+    path: '/comment/delete/:category/:id/:commentId',
+    thunk: async (dispatch, getState) => {
+      await getComments(dispatch, getState);
+
+      const {
+        location,
+        posts,
+        comments
+      } = getState();
+
+      const {category, id, commentId} = location.payload;
+      // redirect url to home page if  no-exist
+      if (! (id in comments && commentId in comments[id])){
+        const action = redirect({type: 'HOME'});
+        dispatch(action);
+      }
+
+      const post = posts[category][id];
+      const comment = comments[id][commentId];
+
+      await ReadAPI.delComment(commentId);
+      await dispatch(Actions.delComment(comment, post));
+
+      // return to prev url
+      let prev = location.prev;
+      let action;
+      if (prev.type.length===0){ // to homepage if not prev history
+        action = redirect({type: 'HOME'});
+      }else{
+        action = {type:'POSTDETAIL', payload: prev.payload};
+      }
+      dispatch(action);
+    }
+  }
 };

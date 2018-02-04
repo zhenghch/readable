@@ -64,7 +64,7 @@ class PostForm extends Component{
   closeForm(){
     let prev = this.props.location.prev;
     let action;
-    if (prev.type.length===0 || prev.type === 'POSTDETAIL'){ // to homepage if not prev history
+    if (prev.type.length===0){ // to homepage if not prev history
       action = redirect({type: 'HOME'});
     }else{
       action = {type:prev.type, payload: prev.payload};
@@ -83,11 +83,11 @@ class PostForm extends Component{
   handleSubmit(event){
     event.preventDefault();
 
-    const {title, body, author, category, postnew} = this.state;
-
     let post;
+    const { postnew } = this.state;
 
     if (postnew){
+      const {title, body, author, category} = this.state;
       post = {
         title,
         body,
@@ -104,10 +104,17 @@ class PostForm extends Component{
         .then(this.props.dispatch(Actions.addPost(post)));
 
     }else{
+      const { title, body, author, category, id, timestamp, voteScore, deleted, commentCount} = this.state;
       post = {
-        ...post,
         title,
-        body
+        body,
+        author,
+        category,
+        id,
+        timestamp,
+        voteScore,
+        deleted,
+        commentCount
       };
 
       ReadAPI.editPost(post.id, post.body, post.title)
@@ -124,8 +131,8 @@ class PostForm extends Component{
 
     return (
         <form className="post-form" onReset={this.resetState} onSubmit={this.handleSubmit}>
-          <Close className="close-post"  onClick={this.closeForm}>
-          </Close>
+          <Close className="close-post"  onClick={this.closeForm} />
+
           <br/>
           author:
           <input type="text"
