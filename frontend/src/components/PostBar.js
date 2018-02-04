@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 
@@ -16,25 +17,13 @@ function PostBar(props){
       <Edit style={{color: "white"}} onClick={() => props.dispatch({type: 'POSTEDIT', payload:{category:props.post.category, id:props.post.id}}) }/>
 
       &nbsp; &nbsp;
-      <Bomb style={{color: "red"}} onClick={() => {
-          if (!(props.post.id in props.comments)){
-            ReadAPI.getComments(props.post.id)
-              .then(commentList =>
-                commentList.reduce((res, curr) => ({
-                  ...res,
-                  [curr.id]: curr
-                }), {}))
-              .then(comments => Promise.all(
-                props.dispatch(Actions.updateComments(props.post.id, comments)),
-                ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)))).then(val => {}, reason => {}));
-          }else{
-            ReadAPI.delPost(props.post.id).then(props.dispatch(Actions.delPost(props.post)));
-          }
-      }}/>
-      <div style={{color: "rgb(255,255,255)"}}><FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
-          {props.post.voteScore}
-          <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
-            &nbsp; &nbsp; {props.post.commentCount} comments
+      <Bomb style={{color: "red"}} onClick={() => props.dispatch({type: 'POSTDELETE', payload:{category:props.post.category, id:props.post.id}})} />
+
+      <div style={{color: "rgb(255,255,255)"}}>
+        <FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
+        {props.post.voteScore}
+        <FaArrowDown onClick={() => ReadAPI.votePost(props.post.id, "downVote").then(props.dispatch(Actions.downVote(props.post)))}/>
+        &nbsp; &nbsp; {props.post.commentCount} comments
       </div>
     </div>
   );

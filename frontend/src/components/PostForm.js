@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { redirect } from 'redux-first-router';
 import { NavLink } from 'redux-first-router-link';
 import Close from 'react-icons/lib/fa/arrow-left';
 
@@ -62,11 +63,13 @@ class PostForm extends Component{
 
   closeForm(){
     let prev = this.props.location.prev;
-    if (prev.type.length===0){ // to homepage if not prev history
-      prev.type = 'HOME';
+    let action;
+    if (prev.type.length===0 || prev.type === 'POSTDETAIL'){ // to homepage if not prev history
+      action = redirect({type: 'HOME'});
+    }else{
+      action = {type:prev.type, payload: prev.payload};
     }
-
-    this.props.dispatch({type:prev.type, payload: prev.payload});
+    this.props.dispatch(action);
   }
 
   handleChange(event, field){
@@ -86,7 +89,10 @@ class PostForm extends Component{
 
     if (postnew){
       post = {
-        ...this.state,
+        title,
+        body,
+        author,
+        category,
         id: uuid(),
         timestamp: Date.now(),
         voteScore: 1,
@@ -100,7 +106,8 @@ class PostForm extends Component{
     }else{
       post = {
         ...post,
-        ...this.state
+        title,
+        body
       };
 
       ReadAPI.editPost(post.id, post.body, post.title)

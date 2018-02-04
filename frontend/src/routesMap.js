@@ -35,11 +35,11 @@ const initApp = async (dispatch, getState) => {
 
 // retrieve comments
 const getComments = async (dispatch, getState) =>{
+  const {categories, posts, comments} = await initApp(dispatch, getState);
+
   const {
     location: { payload: {category, id}}
   } = getState();
-
-  const {categories, posts, comments} = await initApp(dispatch, getState);
 
   // redirect url to home page if  no-exist
   if (! ((category in posts) && (id in posts[category]))){
@@ -71,11 +71,11 @@ export default {
   CATEGORY: {
     path: '/category/:category',
     thunk: async (dispatch, getState) => {
+      const {categories, posts} = await initApp(dispatch, getState);
+
       const {
         location: { payload: { category }}
       } = getState();
-
-      const {categories, posts} = await initApp(dispatch, getState);
 
       if (! (category in posts)){ // redirect url to home page if category no-exist
         const action = redirect({type: 'HOME'});
@@ -98,5 +98,35 @@ export default {
   POSTDETAIL:{
     path: '/post/detail/:category/:id',
     thunk: getComments
+  },
+
+  POSTDELETE: {
+    path: '/post/delete/:category/:id',
+    thunk: async (dispatch, getState) => {
+      await getComments(dispatch, getState);
+
+      const {
+        location,
+        posts
+      } = getState();
+
+
+      // del post
+      const {category, id} = location.payload;
+      let post = posts[category][id];
+      await ReadAPI.delPost(id);
+      await dispatch(Actions.delPost(post));
+
+      // return to prev url
+      let prev = location.prev;
+      let action;
+      if (prev.type.length===0 || prev.type === 'POSTDETAIL'){ // to homepage if not prev history
+        action = redirect({type: 'HOME'});
+      }else{
+        action = {type:prev.type, payload: prev.payload};
+      }
+      dispatch(action);
+    }
   }
+
 };
