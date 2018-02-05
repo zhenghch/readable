@@ -1,22 +1,40 @@
-# Readable API Server
+# Readable 
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+The code for Udacity's Redux course, a content and comment web. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+## Start the app
+Start api server and frontend, then navigate to localhost at open host.
+### install and start API server
+- `cd api-server`
+- `npm install`
+- `node server`
 
-## Start Developing
+### install and start frontend
+- `cd frontend`
+- `npm install`
+- `npm start`
 
-To get started developing right away:
+## description
+The app use [redux-first-router](https://github.com/faceyspacey/redux-first-router) to manage navigation of url as action in redux. React components are then rendered conditioned on url (*location* state in redux store). 
 
-* Install and start the API server
-    - `cd api-server`
-    - `npm install`
-    - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
-    - `cd frontend`
-    - `npm start`
+There're five main views:
+- sidebar
+- post list view
+- post detail view
+- post form
+- comment form
 
-## API Server
+### sidebar
+Sidebar view is always rendered. It lists all predefined categories, means to sort post, and button to post new contents. 
 
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+### post list view
+When navigate to category page (or at home page), summary of all posts of selected category are listed. It also contains button to reply, edit, delete post; and also up/down vote listed posts.
+
+### post detail view
+Post detail view will render when at postdetail page. Detailed info of post, including content, comments, will be displayed. 
+
+### post form
+post form is triggered to add new post or edit existing post.
+
+### comment form
+comment form is triggered to add new comment or edit exisiting comment.
