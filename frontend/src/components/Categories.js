@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Link, { NavLink} from 'redux-first-router-link';
 
+/**
+ * @description component to list all categories, each link to a category view
+ */
 function Categories(props){
   return(
     <div>

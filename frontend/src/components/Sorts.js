@@ -4,6 +4,9 @@ import Actions from '../actions';
 import FaCaretUp from "react-icons/lib/fa/caret-up";
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
+/**
+ * @description click to switch sorts methods: timestamp, voteScore, either increase or decrease
+ */
 function Sorts(props){
   return (
     <div>

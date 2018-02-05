@@ -6,12 +6,9 @@ import { PostBar } from './PostBar';
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
 
-import FaArrowDown from 'react-icons/lib/fa/hand-o-down';
-import FaArrowUp from 'react-icons/lib/fa/hand-o-up';
-import Bomb from 'react-icons/lib/fa/bomb';
-import Edit from 'react-icons/lib/fa/edit';
-
-
+/**
+ * @description overview of post, including: title, author, time of creation, votescore; andf aslo reply, edit, del button
+ */
 function PostOverview(props){
   return (
     <div>
@@ -23,8 +20,7 @@ function PostOverview(props){
 
   );
 }
-PostOverview = connect(({comments}) => ({comments}))(PostOverview);
-
+PostOverview = connect()(PostOverview);
 
 export {
   PostOverview

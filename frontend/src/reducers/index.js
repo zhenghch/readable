@@ -1,33 +1,5 @@
 import Actions from '../actions';
 
-function activePost(state={category:'', id:''}, action){
-  if (action.type === Actions.ACTIVE_POST){
-    if (action.active){
-      return action.post;
-    }else{
-      return {category:'', id:''};
-    }
-  }else{
-    return state;
-  }
-}
-
-function postModal(state=false, action){
-  if (action.type === Actions.POST_MODAL){
-    return action.show;
-  }else{
-    return state;
-  }
-}
-
-function detailMode(state=false, action){
-  if (action.type === Actions.DETAIL_MODE){
-    return action.show;
-  }else{
-    return state;
-  }
-}
-
 // helper function to select/filter specific post
 function selectPost(posts, id, func){
   return Object.keys(posts)
@@ -35,8 +7,11 @@ function selectPost(posts, id, func){
     .reduce((res, key) => ({...res, [key]: posts[key]}), {});
 }
 
-/////////////////
-// store categories into store
+/**
+ * @description reducer to update categories state
+ * @param {array} state - origin categories state
+ * @param {object} action - action
+ */
 function setCategories(state=[], action){
   if (action.type === Actions.SET_CATEGORIES){
     return action.categories;
@@ -45,8 +20,12 @@ function setCategories(state=[], action){
   }
 }
 
-/////////////////
-// sorts
+
+/**
+ * @description reducer to update sort method state
+ * @param {array} state - origin sorts state
+ * @param {object} action - action
+ */
 function sortPosts(state={by:'timestamp', how:'decrease'}, action){
   if (action.type === Actions.SORT_POSTS){
     return action.option;
@@ -56,10 +35,13 @@ function sortPosts(state={by:'timestamp', how:'decrease'}, action){
 }
 
 
-/////////////////
-// store posts, add, del, edit post
+/**
+ * @description reducer to handle post update, including initialization; add, del, edit, up/down vote a post; add/del comment of post
+ * @param {array} state - origin posts state
+ * @param {object} action - action
+ */
 function handlePosts(state={}, action){
-  // store posts
+  // batch update of posts
   if (action.type === Actions.UPDATE_ALL_POSTS){
     return action.posts;
   }else if (action.type === Actions.UPDATE_CATEGORY_POSTS){
@@ -69,34 +51,13 @@ function handlePosts(state={}, action){
     };
   }
 
-  // add, del, edit post
+  // action relate to single post
   let post = action.post || {},
       cate = post.category,
       id = post.id;
 
   switch (action.type){
-  case Actions.UP_VOTE:
-    return {
-      ...state,
-      [cate]: {
-        ...state[cate],
-        [id]: {
-          ...post,
-          voteScore: post.voteScore + 1
-        }
-      }
-    };
-  case Actions.DOWN_VOTE:
-    return {
-      ...state,
-      [cate]: {
-        ...state[cate],
-        [id]: {
-          ...post,
-          voteScore: post.voteScore - 1
-        }
-      }
-    };
+    // add, del, edit post
   case Actions.NEW_POST:
     // not in predefined category or 'id' conflict
     if ( !(cate in state) || (id in state[cate]) ){
@@ -139,7 +100,31 @@ function handlePosts(state={}, action){
         }
       };
     }
+    // up/down vote a single post
+  case Actions.UP_VOTE:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          voteScore: post.voteScore + 1
+        }
+      }
+    };
+  case Actions.DOWN_VOTE:
+    return {
+      ...state,
+      [cate]: {
+        ...state[cate],
+        [id]: {
+          ...post,
+          voteScore: post.voteScore - 1
+        }
+      }
+    };
 
+    // add / del comment
   case Actions.ADD_COMMENT:
     return {
       ...state,
@@ -168,38 +153,30 @@ function handlePosts(state={}, action){
   }
 }
 
-/////////////////
-// store , add, del, edit comments
+
+/**
+ * @description reducer to handle comment update, including initialization; add, del, edit, up/down vote a post; add/del comment of post
+ * @param {array} state - origin comments state
+ * @param {object} action - action
+ */
 function handleComments(state = {}, action){
   switch(action.type){
+    // batch update of comments of a single post
   case Actions.UPDATE_COMMENTS:
     return {
       ...state,
       [action.postID]: action.comments
     };
-  case Actions.UPVOTE_COMMENT:
+  case Actions.DEL_POST:
+    console.log(state, action.post.id, state[action.post.id]);
     return {
       ...state,
-      [action.comment.parentId]: {
-        ...state[action.comment.parentId],
-        [action.comment.id]: {
-          ...action.comment,
-          voteScore: action.comment.voteScore + 1
-        }
-      }
-    };
-  case Actions.DOWNVOTE_COMMENT:
-    return {
-      ...state,
-      [action.comment.parentId]: {
-        ...state[action.comment.parentId],
-        [action.comment.id]: {
-          ...action.comment,
-          voteScore: action.comment.voteScore - 1
-        }
-      }
+      [action.post.id]: Object.keys(state[action.post.id]).map(id => state[action.post.id][id]).reduce((res, curr) => (
+        {...res,
+         [curr.id]: {...curr, parentDeleted: true}}), {})
     };
 
+    // add, del, edit a comment
   case Actions.ADD_COMMENT:
     return {
       ...state,
@@ -228,25 +205,36 @@ function handleComments(state = {}, action){
       }
     };
 
-  case Actions.DEL_POST:
-    console.log(state, action.post.id, state[action.post.id]);
+   // up/down vote a comment
+  case Actions.UPVOTE_COMMENT:
     return {
       ...state,
-      [action.post.id]: Object.keys(state[action.post.id]).map(id => state[action.post.id][id]).reduce((res, curr) => (
-        {...res,
-         [curr.id]: {...curr, parentDeleted: true}}), {})
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: {
+          ...action.comment,
+          voteScore: action.comment.voteScore + 1
+        }
+      }
     };
+  case Actions.DOWNVOTE_COMMENT:
+    return {
+      ...state,
+      [action.comment.parentId]: {
+        ...state[action.comment.parentId],
+        [action.comment.id]: {
+          ...action.comment,
+          voteScore: action.comment.voteScore - 1
+        }
+      }
+    };
+
   default:
     return state;
   }
 }
 
-
 export { setCategories as categories };
-export { handlePosts as posts };
 export { sortPosts as sorts };
+export { handlePosts as posts };
 export { handleComments as comments};
-//
-export { activePost as activepost };
-export { postModal as postmodal};
-export { detailMode as detailmode};

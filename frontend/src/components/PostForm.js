@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { redirect } from 'redux-first-router';
 import { NavLink } from 'redux-first-router-link';
+
 import Close from 'react-icons/lib/fa/arrow-left';
 
 import Actions from '../actions';
@@ -10,6 +11,9 @@ import { v1 as uuid} from 'uuid';
 
 import '../css/PostForm.css';
 
+/**
+ * @description controlled form to add or edit post, use 'postnew' variable to decide add or edit. component will render only at 'postnew' or 'postedit' page
+ */
 class PostForm extends Component{
   constructor(){
     super();
@@ -29,6 +33,9 @@ class PostForm extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * @description function to decide whether component should render, at add or edit mode
+   */
   storePropsToState(props){
     const {type, payload} = props.location;
     let post, postnew, show;
@@ -38,6 +45,7 @@ class PostForm extends Component{
       postnew = true;
       show=true;
     }else if (type === 'POSTEDIT'){
+      // copy existing data
       post = Object.keys(props.posts).length ? props.posts[payload.category][payload.id]: {title: '', body:'', author:'', category: ''};
       postnew=false;
       show=true;
@@ -56,11 +64,13 @@ class PostForm extends Component{
     this.storePropsToState(props);
   }
 
+  // undo change: 1) clear all content at add mode, 2) restore to original post
   resetState(event){
     event.preventDefault();
     this.storePropsToState(this.props);
   }
 
+  // hide this form and return to previous page or home page
   closeForm(){
     let prev = this.props.location.prev;
     let action;
@@ -72,6 +82,7 @@ class PostForm extends Component{
     this.props.dispatch(action);
   }
 
+  // handle change of form
   handleChange(event, field){
     event.preventDefault();
 
@@ -80,6 +91,7 @@ class PostForm extends Component{
     });
   }
 
+  // submit to server. 1) add new post at add mode 2) confirm change at edit mode
   handleSubmit(event){
     event.preventDefault();
 
@@ -123,6 +135,7 @@ class PostForm extends Component{
     this.closeForm();
   }
 
+  // render
   render(){
     const {title, body, author, category, postnew, show} = this.state;
     if (!show){

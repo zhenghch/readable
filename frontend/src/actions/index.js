@@ -12,56 +12,8 @@ const updateAllPosts = (posts) => ({
   posts
 });
 
-//
-const ACTIVE_POST = 'ACTIVE_POST';
-
-const POST_MODAL = 'POST_MODAL';
-const DETAIL_MODE = 'DETAIL_MODE';
-//
-
-
+// retrieve posts of one category
 const UPDATE_CATEGORY_POSTS = 'UPDATE_CATEGORY_POSTS';
-
-const SORT_POSTS = 'SORT_POSTS';
-
-const UP_VOTE = 'UP_VOTE';
-const DOWN_VOTE = 'DOWN_VOTE';
-const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
-const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT';
-
-const NEW_POST = 'NEW_POST';
-const DEL_POST = 'DEL_POST';
-
-const EDIT_POST = 'EDIT_POST';
-
-const ADD_COMMENT = "ADD_COMMENT";
-const EDIT_COMMENT = "EDIT_COMMENT";
-const DEL_COMMENT = 'DEL_COMMENT';
-
-const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
-
-// active/deactive post to control post form display and detail post view
-const activePost = (active=true, post={category:'', id:''}) => ({
-  type: ACTIVE_POST,
-  active,
-  post: {category: post.category, id: post.id}
-});
-
-// whether to render post modal
-const postModal = (show=false) => ({
-  type: POST_MODAL,
-  show
-});
-
-// whether to show detail of post
-const detailMode = (show=false)  => ({
-  type: DETAIL_MODE,
-  show
-});
-
-//
-
-
 const updateCategoryPosts = (cate, posts) => ({
   type: UPDATE_CATEGORY_POSTS,
   posts: {
@@ -70,11 +22,68 @@ const updateCategoryPosts = (cate, posts) => ({
   }
 });
 
+// sort posts
+const SORT_POSTS = 'SORT_POSTS';
 const sortPosts = (option) => ({
   type: SORT_POSTS,
   option
 });
 
+
+// add, del, edit post
+const NEW_POST = 'NEW_POST';
+const DEL_POST = 'DEL_POST';
+const EDIT_POST = 'EDIT_POST';
+const addPost = (post) => ({
+  type: NEW_POST,
+  post
+});
+
+const delPost = (post) => ({
+  type: DEL_POST,
+  post
+});
+
+
+const editPost = (post) => ({
+  type: EDIT_POST,
+  post
+});
+
+// get all comments of a single post
+const UPDATE_COMMENTS = 'UPDATE_COMMENTS';
+const updateComments = (postID, comments) => ({
+  type: UPDATE_COMMENTS,
+  postID,
+  comments
+});
+
+// add, del, edit comment
+const ADD_COMMENT = "ADD_COMMENT";
+const EDIT_COMMENT = "EDIT_COMMENT";
+const DEL_COMMENT = 'DEL_COMMENT';
+const addComment = (comment, post) => ({
+  type: ADD_COMMENT,
+  comment,
+  post
+});
+
+const editComment = (comment) => ({
+  type: EDIT_COMMENT,
+  comment
+});
+
+const delComment = (comment, post) => ({
+  type: DEL_COMMENT,
+  comment,
+  post
+});
+
+// up/down vote post and comments
+const UP_VOTE = 'UP_VOTE';
+const DOWN_VOTE = 'DOWN_VOTE';
+const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
+const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT';
 const upVote = (post) => ({
   type: UP_VOTE,
   post
@@ -95,96 +104,50 @@ const downVoteComment = (comment) => ({
   comment
 });
 
-const addPost = (post) => ({
-  type: NEW_POST,
-  post
-});
-
-const delPost = (post) => ({
-  type: DEL_POST,
-  post
-});
-
-
-const editPost = (post) => ({
-  type: EDIT_POST,
-  post
-});
-
-const addComment = (comment, post) => ({
-  type: ADD_COMMENT,
-  comment,
-  post
-});
-
-const editComment = (comment) => ({
-  type: EDIT_COMMENT,
-  comment
-});
-
-const delComment = (comment, post) => ({
-  type: DEL_COMMENT,
-  comment,
-  post
-});
-
-const updateComments = (postID, comments) => ({
-  type: UPDATE_COMMENTS,
-  postID,
-  comments
-});
 
 export default {
+  // retrieve categories
   SET_CATEGORIES,
   setCategories,
 
+  // retrieve posts
   UPDATE_ALL_POSTS,
   updateAllPosts,
 
   UPDATE_CATEGORY_POSTS,
+  updateCategoryPosts,
+
+  // sort posts to display
   SORT_POSTS,
+  sortPosts,
 
-  UP_VOTE,
-  DOWN_VOTE,
-  UPVOTE_COMMENT,
-  DOWNVOTE_COMMENT,
-
+  // add, del, edit post
   NEW_POST,
   DEL_POST,
-
   EDIT_POST,
+  addPost,
+  delPost,
+  editPost,
 
+  // retrieve comments
+  UPDATE_COMMENTS,
+  updateComments,
+
+  // add, del, edit comments
   ADD_COMMENT,
   EDIT_COMMENT,
   DEL_COMMENT,
-
-  UPDATE_COMMENTS,
-
-  sortPosts,
-  addPost,
-  delPost,
-
-  upVote,
-  downVote,
-  upVoteComment,
-  downVoteComment,
-
-  updateCategoryPosts,
-
-  editPost,
-
   addComment,
   editComment,
   delComment,
 
-  updateComments,
-  //
-  ACTIVE_POST,
-  activePost,
-
-  POST_MODAL,
-  postModal,
-
-  DETAIL_MODE,
-  detailMode
+  // up/down vote post and comments
+  UP_VOTE,
+  DOWN_VOTE,
+  UPVOTE_COMMENT,
+  DOWNVOTE_COMMENT,
+  upVote,
+  downVote,
+  upVoteComment,
+  downVoteComment
 };

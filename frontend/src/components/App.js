@@ -10,7 +10,6 @@ import '../css/App.css';
 const App = () => (
   <div className="app" >
     <Sidebar/>
-
     <ListView />
     <PostForm />
     <PostView />

@@ -1,24 +1,29 @@
-import { redirect, NOT_FOUND } from 'redux-first-router';
+import { redirect } from 'redux-first-router';
 import * as ReadAPI from './utils/api';
 import Actions from './actions';
 
-// initapp
+
+/**
+ * @description function to initialize app's categories and posts when user enter the app by directly input specific url
+ * @param {function} dispatch - dispatch function of redux store
+ * @param {function} getState - getState function of redux store
+ */
 const initApp = async (dispatch, getState) => {
   const { categories, posts, comments } = getState();
 
+  // return if app already initialized
   if (categories.length){
     return {categories, posts, comments};
   }
 
-  // get all categories,
-  // retrieve all posts -- better to retrieve when needed
+  // initilization
   let cates, postList;
 
-  // categories
+  // get all categories
   cates = await ReadAPI.getCategories();
   await dispatch(Actions.setCategories(cates));
 
-  // posts
+  // retrieve all posts -- better to retrieve when needed
   postList = await ReadAPI.getAllPosts();
   let postSet = cates.reduce((res, curr)=>({...res, [curr.path]:{}}), {});
   postSet = postList.reduce((res, curr) => ({
@@ -27,15 +32,20 @@ const initApp = async (dispatch, getState) => {
       ...res[curr.category],
       [curr.id]:curr
     }}), postSet);
-
   await dispatch(Actions.updateAllPosts(postSet));
 
   return {categories:cates, posts: postSet, comments};
 };
 
-// retrieve comments
+
+/**
+ * @description function to retrieve comments of a single post if necessary
+ * @param {function} dispatch - dispatch function of redux store
+ * @param {function} getState - getState function of redux store
+ */
 const getComments = async (dispatch, getState) =>{
-  const {categories, posts, comments} = await initApp(dispatch, getState);
+  // init state in case it's the first entry of app
+  const {posts, comments} = await initApp(dispatch, getState);
 
   const {
     location: { payload: {category, id}}
@@ -43,8 +53,7 @@ const getComments = async (dispatch, getState) =>{
 
   // redirect url to home page if  no-exist
   if (! ((category in posts) && (id in posts[category]))){
-    const action = redirect({type: 'HOME'});
-    dispatch(action);
+    dispatch(redirect({type: 'HOME'}));
   }
 
   // update comment
@@ -62,16 +71,18 @@ const getComments = async (dispatch, getState) =>{
   }
 };
 
+// url management
 export default {
   HOME: {
     path: '/',
     thunk: initApp
   },
 
+  // category view
   CATEGORY: {
     path: '/category/:category',
     thunk: async (dispatch, getState) => {
-      const {categories, posts} = await initApp(dispatch, getState);
+      const {posts} = await initApp(dispatch, getState);
 
       const {
         location: { payload: { category }}
@@ -84,22 +95,26 @@ export default {
     }
   },
 
+  // add new post
   POSTNEW: {
     path: '/post/new',
     thunk: initApp
   },
 
 
+  // edit post
   POSTEDIT: {
     path: '/post/edit/:category/:id',
     thunk: getComments
   },
 
+  // post detail view
   POSTDETAIL:{
     path: '/post/detail/:category/:id',
     thunk: getComments
   },
 
+  // del post
   POSTDELETE: {
     path: '/post/delete/:category/:id',
     thunk: async (dispatch, getState) => {
@@ -109,7 +124,6 @@ export default {
         location,
         posts
       } = getState();
-
 
       // del post
       const {category, id} = location.payload;
@@ -129,11 +143,13 @@ export default {
     }
   },
 
+  // add comment
   COMMENTNEW:{
     path: '/comment/new/:category/:id/',
     thunk: getComments
   },
 
+  // edit comment
   COMMENTEDIT:{
     path: '/comment/edit/:category/:id/:commentId',
     thunk: async (dispatch, getState) => {
@@ -141,11 +157,10 @@ export default {
 
       const {
         location,
-        posts,
         comments
       } = getState();
 
-      const {category, id, commentId} = location.payload;
+      const {id, commentId} = location.payload;
       // redirect url to home page if  no-exist
       if (! (id in comments && commentId in comments[id])){
         const action = redirect({type: 'HOME'});
@@ -154,6 +169,7 @@ export default {
     }
   },
 
+  // del comment
   COMMENTDELETE:{
     path: '/comment/delete/:category/:id/:commentId',
     thunk: async (dispatch, getState) => {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'redux-first-router-link';
 
 import Actions from '../actions';
 import * as ReadAPI from '../utils/api';
@@ -11,6 +10,9 @@ import Bomb from 'react-icons/lib/fa/bomb';
 import Edit from 'react-icons/lib/fa/edit';
 import Reply from 'react-icons/lib/fa/mail-reply';
 
+/**
+ * @description meta info of post: author, time of creation, votescore; andf aslo link to reply, edit, delete and up/down vote
+ */
 function PostBar(props){
   return (
     <div style={{color: "blue"}}>

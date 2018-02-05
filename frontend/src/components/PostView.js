@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { redirect } from 'redux-first-router';
 
 import { PostBar } from './PostBar';
 import { CommentBar } from './CommentBar';
@@ -16,7 +17,9 @@ import Reply from 'react-icons/lib/fa/mail-reply';
 
 import '../css/PostView.css';
 
-
+/**
+ * @description post detail view, list all comments of post; render at 'postdetail' page
+ */
 class PostView extends Component{
   constructor(){
     super();
@@ -44,15 +47,20 @@ class PostView extends Component{
     });
   }
 
+  // return to previous page
   close(){
     let prev = this.props.location.prev;
-    if (prev.type.length===0){ // to homepage if not prev history
-      prev.type = 'HOME';
+    let action;
+    if ('category' in prev.payload){
+      action = {type:'CATEGORY', payload: prev.payload};
+    }else{
+      action = redirect({type:'HOME'});
     }
 
-    this.props.dispatch({type:'CATEGORY', payload: prev.payload});
+    this.props.dispatch(action);
   }
 
+  // render
   render (){
     if (!this.state.show){
       return <div/>;
