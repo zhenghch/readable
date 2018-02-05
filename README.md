@@ -15,7 +15,7 @@ Start api server and frontend, then navigate to localhost at open host.
 - `npm start`
 
 ## description
-The app use [redux-first-router](https://github.com/faceyspacey/redux-first-router) to manage navigation of url as action in redux. React components are then rendered conditioned on url (*location* state in redux store). 
+The app use [redux-first-router](https://github.com/faceyspacey/redux-first-router) to manage navigation of url as action in redux. React components are then rendered conditioned on url (*location* state in redux store).  (some css style taken from [redux-first-router-demo](https://github.com/faceyspacey/redux-first-router-demo))
 
 There're five main views:
 - sidebar
