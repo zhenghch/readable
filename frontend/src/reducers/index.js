@@ -168,7 +168,6 @@ function handleComments(state = {}, action){
       [action.postID]: action.comments
     };
   case Actions.DEL_POST:
-    console.log(state, action.post.id, state[action.post.id]);
     return {
       ...state,
       [action.post.id]: Object.keys(state[action.post.id]).map(id => state[action.post.id][id]).reduce((res, curr) => (

@@ -42,7 +42,6 @@ class CommentForm extends Component{
       commentnew = true;
       show=true;
     }else if (type === 'COMMENTEDIT'){
-      console.log(props,props.comments, payload.id);
       comment = Object.keys(props.comments).length ? props.comments[payload.id][payload.commentId]: {body: '', author: ''};
       commentnew=false;
       show=true;
