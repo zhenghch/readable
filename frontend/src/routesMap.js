@@ -144,13 +144,13 @@ export default {
 
   // add comment
   COMMENTNEW:{
-    path: '/comment/new/:category/:id/',
+    path: '/:category/:id/comment/new',
     thunk: getComments
   },
 
   // edit comment
   COMMENTEDIT:{
-    path: '/comment/edit/:category/:id/:commentId',
+    path: '/:category/:id/:commentId/edit',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);
 
@@ -170,7 +170,7 @@ export default {
 
   // del comment
   COMMENTDELETE:{
-    path: '/comment/delete/:category/:id/:commentId',
+    path: '/:category/:id/:commentId/delete',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);
 
