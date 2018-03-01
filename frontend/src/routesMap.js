@@ -2,6 +2,8 @@ import { redirect, NOT_FOUND } from 'redux-first-router';
 import * as ReadAPI from './utils/api';
 import Actions from './actions';
 
+const HOME_ACTION = redirect({type: 'HOME' });
+const NOT_FOUND_ACTION = redirect({type: NOT_FOUND});
 
 /**
  * @description function to initialize app's categories and posts when user enter the app by directly input specific url
@@ -53,7 +55,7 @@ const getComments = async (dispatch, getState) =>{
 
   // redirect url to home page if no-exist
   if (! ((category in posts) && (id in posts[category]))){
-    dispatch(redirect({type: NOT_FOUND}));
+    dispatch(NOT_FOUND_ACTION);
   }
 
   // update comment
@@ -88,8 +90,8 @@ export default {
         location: { payload: { category }}
       } = getState();
 
-      if (! (category in posts)){ // redirect url to home page if category no-exist
-        dispatch({type: NOT_FOUND});
+      if (! (category in posts)){ // redirect url to 404
+        dispatch(NOT_FOUND_ACTION);
       }
     }
   },
@@ -102,19 +104,19 @@ export default {
 
 
   // edit post
-  POSTEDIT: {
+  [Actions.POSTEDIT]: {
     path: '/:category/:id/edit',
     thunk: getComments
   },
 
   // post detail view
-  POSTDETAIL:{
+  [Actions.POSTDETAIL]:{
     path: '/:category/:id',
     thunk: getComments
   },
 
   // del post
-  POSTDELETE: {
+  [Actions.POSTDELETE]: {
     path: '/:category/:id/delete',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);
@@ -134,7 +136,7 @@ export default {
       let prev = location.prev;
       let action;
       if (prev.type.length===0 || prev.type === 'POSTDETAIL'){ // to homepage if not prev history
-        action = redirect({type: 'HOME'});
+        action = HOME_ACTION;
       }else{
         action = {type:prev.type, payload: prev.payload};
       }
@@ -160,10 +162,9 @@ export default {
       } = getState();
 
       const {id, commentId} = location.payload;
-      // redirect url to home page if  no-exist
+      // redirect to 404 if  no-exist
       if (! (id in comments && commentId in comments[id])){
-        const action = redirect({type: 'HOME'});
-        dispatch(action);
+        dispatch(NOT_FOUND_ACTION);
       }
     }
   },
@@ -181,10 +182,9 @@ export default {
       } = getState();
 
       const {category, id, commentId} = location.payload;
-      // redirect url to home page if  no-exist
+      // redirect to 404
       if (! (id in comments && commentId in comments[id])){
-        const action = redirect({type: 'HOME'});
-        dispatch(action);
+        dispatch(NOT_FOUND_ACTION);
       }
 
       const post = posts[category][id];
@@ -197,7 +197,7 @@ export default {
       let prev = location.prev;
       let action;
       if (prev.type.length===0){ // to homepage if not prev history
-        action = redirect({type: 'HOME'});
+        action = HOME_ACTION;
       }else{
         action = {type:'POSTDETAIL', payload: prev.payload};
       }

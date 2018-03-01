@@ -26,7 +26,8 @@ function setCategories(state=[], action){
  * @param {array} state - origin sorts state
  * @param {object} action - action
  */
-function sortPosts(state={by:'timestamp', how:'decrease'}, action){
+const SORTS_INIT_STATE = {by:'timestamp', how:'decrease'};
+function sortPosts(state=SORTS_INIT_STATE, action){
   if (action.type === Actions.SORT_POSTS){
     return action.option;
   }else{

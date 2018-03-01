@@ -34,6 +34,7 @@ const sortPosts = (option) => ({
 const NEW_POST = 'NEW_POST';
 const DEL_POST = 'DEL_POST';
 const EDIT_POST = 'EDIT_POST';
+
 const addPost = (post) => ({
   type: NEW_POST,
   post
@@ -44,10 +45,25 @@ const delPost = (post) => ({
   post
 });
 
-
 const editPost = (post) => ({
   type: EDIT_POST,
   post
+});
+
+// post routes
+const POSTNEW = 'POSTNEW';
+const POSTDETAIL = 'POSTDETAIL';
+const POSTDELETE = 'POSTDELETE';
+const POSTEDIT = 'POSTEDIT';
+
+const postDelRoute = (payload) => ({
+  type: POSTDELETE,
+  payload
+});
+
+const postEditRoute = (payload) => ({
+  type: POSTEDIT,
+  payload
 });
 
 // get all comments of a single post
@@ -62,6 +78,7 @@ const updateComments = (postID, comments) => ({
 const ADD_COMMENT = "ADD_COMMENT";
 const EDIT_COMMENT = "EDIT_COMMENT";
 const DEL_COMMENT = 'DEL_COMMENT';
+
 const addComment = (comment, post) => ({
   type: ADD_COMMENT,
   comment,
@@ -78,6 +95,17 @@ const delComment = (comment, post) => ({
   comment,
   post
 });
+
+// comment routes
+const COMMENTNEW = 'COMMENTNEW';
+const COMMENTEDIT = 'COMMENTEDIT';
+const COMMENTDELETE = 'COMMENTDELETE';
+
+const commentNewRoute = ( payload ) => ({
+  type: COMMENTNEW,
+  payload
+});
+
 
 // up/down vote post and comments
 const UP_VOTE = 'UP_VOTE';
@@ -129,6 +157,14 @@ export default {
   delPost,
   editPost,
 
+  // post route
+  POSTNEW,
+  POSTDETAIL,
+  POSTDELETE,
+  POSTEDIT,
+  postDelRoute,
+  postEditRoute,
+
   // retrieve comments
   UPDATE_COMMENTS,
   updateComments,
@@ -140,6 +176,9 @@ export default {
   addComment,
   editComment,
   delComment,
+
+  COMMENTNEW,
+  commentNewRoute,
 
   // up/down vote post and comments
   UP_VOTE,

@@ -13,6 +13,8 @@ import Edit from 'react-icons/lib/fa/edit';
  * @description meta info of comment: author, time of creation, votescore; andf aslo link to edit, delete and up/down vote
  */
 function CommentBar(props){
+  const payload = {category:props.post.category, id:props.post.id, commentId: props.comment.id};
+
   return (
     <div style={{color: "blue"}}>
       {props.comment.author} @ {(new Date(props.comment.timestamp)).toDateString()}

@@ -14,17 +14,18 @@ import Reply from 'react-icons/lib/fa/mail-reply';
  * @description meta info of post: author, time of creation, votescore; andf aslo link to reply, edit, delete and up/down vote
  */
 function PostBar(props){
+  const payload = {category: props.post.category, id: props.post.id};
   return (
     <div style={{color: "blue"}}>
       {props.post.author} @ {(new Date(props.post.timestamp)).toDateString()}
       &nbsp; &nbsp;
-      <Reply style={{color: 'rgb(0,255,255)'}} onClick={()=>props.dispatch({type:'COMMENTNEW', payload:{category: props.post.category, id: props.post.id}})}/>
+      <Reply style={{color: 'rgb(0,255,255)'}} onClick={()=>props.dispatch(Actions.commentNewRoute(payload))}/>
 
       &nbsp; &nbsp;
-      <Edit style={{color: "white"}} onClick={() => props.dispatch({type: 'POSTEDIT', payload:{category:props.post.category, id:props.post.id}}) }/>
+      <Edit style={{color: "white"}} onClick={() => props.dispatch(Actions.postEditRoute(payload)) }/>
 
       &nbsp; &nbsp;
-      <Bomb style={{color: "red"}} onClick={() => props.dispatch({type: 'POSTDELETE', payload:{category:props.post.category, id:props.post.id}})} />
+      <Bomb style={{color: "red"}} onClick={() => props.dispatch(Actions.postDelRoute(payload))} />
 
       <div style={{color: "rgb(255,255,255)"}}>
         <FaArrowUp onClick={() => ReadAPI.votePost(props.post.id,"upVote").then(props.dispatch(Actions.upVote(props.post)))}/>
