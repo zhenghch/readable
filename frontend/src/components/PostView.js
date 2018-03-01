@@ -66,9 +66,15 @@ class PostView extends Component{
       return <div/>;
     }
 
+    const {posts} = this.props;
     const {category, id} = this.props.location.payload;
 
-    let post = this.props.posts[category][id];
+
+    if (!(category in posts && id in posts[category])){
+      return <div />;
+    }
+
+    let post = posts[category][id];
     let comments = this.props.comments[id] || {};
 
     return (

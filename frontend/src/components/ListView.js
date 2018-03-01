@@ -24,7 +24,7 @@ function ListView(props){
   const {type, payload} = props.location;
   let posts = props.posts;
   let cate = payload.category || 'HOME';
-
+  console.log(props.location);
   // not at home, cateogry pages
   if ((type !== 'HOME' && type !== 'CATEGORY') || Object.keys(posts).length===0){
     return <div />;
@@ -36,8 +36,10 @@ function ListView(props){
   if (cate === 'HOME'){
     postLists = Object.keys(posts).reduce((res, cate) => res.concat(Object.keys(posts[cate]).map(id => posts[cate][id])), []);
   }else{
-    postLists = Object.keys(posts[cate])
-      .map(id => posts[cate][id]);
+    if (cate in posts ){
+      postLists = Object.keys(posts[cate])
+        .map(id => posts[cate][id]);
+    }
   }
 
   // sort posts

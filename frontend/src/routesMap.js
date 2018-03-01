@@ -1,4 +1,4 @@
-import { redirect } from 'redux-first-router';
+import { redirect, NOT_FOUND } from 'redux-first-router';
 import * as ReadAPI from './utils/api';
 import Actions from './actions';
 
@@ -51,9 +51,9 @@ const getComments = async (dispatch, getState) =>{
     location: { payload: {category, id}}
   } = getState();
 
-  // redirect url to home page if  no-exist
+  // redirect url to home page if no-exist
   if (! ((category in posts) && (id in posts[category]))){
-    dispatch(redirect({type: 'HOME'}));
+    dispatch(redirect({type: NOT_FOUND}));
   }
 
   // update comment
@@ -80,7 +80,7 @@ export default {
 
   // category view
   CATEGORY: {
-    path: '/category/:category',
+    path: '/:category',
     thunk: async (dispatch, getState) => {
       const {posts} = await initApp(dispatch, getState);
 
@@ -89,8 +89,7 @@ export default {
       } = getState();
 
       if (! (category in posts)){ // redirect url to home page if category no-exist
-        const action = redirect({type: 'HOME'});
-        dispatch(action);
+        dispatch({type: NOT_FOUND});
       }
     }
   },
@@ -104,19 +103,19 @@ export default {
 
   // edit post
   POSTEDIT: {
-    path: '/post/edit/:category/:id',
+    path: '/:category/:id/edit',
     thunk: getComments
   },
 
   // post detail view
   POSTDETAIL:{
-    path: '/post/detail/:category/:id',
+    path: '/:category/:id',
     thunk: getComments
   },
 
   // del post
   POSTDELETE: {
-    path: '/post/delete/:category/:id',
+    path: '/:category/:id/delete',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);
 
