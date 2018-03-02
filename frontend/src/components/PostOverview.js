@@ -13,7 +13,7 @@ function PostOverview(props){
   return (
     <div>
       <NavLink className="title"
-               to={{type:'POSTDETAIL', payload:{category: props.post.category, id:props.post.id}}}
+               to={Actions.postDetailRoute({category: props.post.category, id:props.post.id})}
                >{props.post.title}</NavLink>
       <PostBar post={props.post}/>
     </div>

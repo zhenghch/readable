@@ -97,11 +97,10 @@ export default {
   },
 
   // add new post
-  POSTNEW: {
+  [Actions.POSTNEW]: {
     path: '/post/new',
     thunk: initApp
   },
-
 
   // edit post
   [Actions.POSTEDIT]: {
@@ -145,13 +144,13 @@ export default {
   },
 
   // add comment
-  COMMENTNEW:{
+  [Actions.COMMENTNEW]:{
     path: '/:category/:id/comment/new',
     thunk: getComments
   },
 
   // edit comment
-  COMMENTEDIT:{
+  [Actions.COMMENTEDIT]:{
     path: '/:category/:id/:commentId/edit',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);
@@ -170,7 +169,7 @@ export default {
   },
 
   // del comment
-  COMMENTDELETE:{
+  [Actions.COMMENTDELETE]:{
     path: '/:category/:id/:commentId/delete',
     thunk: async (dispatch, getState) => {
       await getComments(dispatch, getState);

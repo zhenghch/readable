@@ -56,6 +56,15 @@ const POSTDETAIL = 'POSTDETAIL';
 const POSTDELETE = 'POSTDELETE';
 const POSTEDIT = 'POSTEDIT';
 
+const postNewRoute = () => ({
+  type: POSTNEW
+});
+
+const postDetailRoute = (payload) => ({
+  type: POSTDETAIL,
+  payload
+});
+
 const postDelRoute = (payload) => ({
   type: POSTDELETE,
   payload
@@ -106,6 +115,15 @@ const commentNewRoute = ( payload ) => ({
   payload
 });
 
+const commentEditRoute = ( payload ) => ({
+  type: COMMENTEDIT,
+  payload
+});
+
+const commentDelRoute = ( payload ) => ({
+  type: COMMENTDELETE,
+  payload
+});
 
 // up/down vote post and comments
 const UP_VOTE = 'UP_VOTE';
@@ -162,6 +180,8 @@ export default {
   POSTDETAIL,
   POSTDELETE,
   POSTEDIT,
+  postNewRoute,
+  postDetailRoute,
   postDelRoute,
   postEditRoute,
 
@@ -178,7 +198,11 @@ export default {
   delComment,
 
   COMMENTNEW,
+  COMMENTEDIT,
+  COMMENTDELETE,
   commentNewRoute,
+  commentEditRoute,
+  commentDelRoute,
 
   // up/down vote post and comments
   UP_VOTE,

@@ -19,10 +19,10 @@ function CommentBar(props){
     <div style={{color: "blue"}}>
       {props.comment.author} @ {(new Date(props.comment.timestamp)).toDateString()}
       &nbsp; &nbsp;
-      <Edit style={{color: "white"}} onClick={() => props.dispatch({type: 'COMMENTEDIT', payload:{category:props.post.category, id:props.post.id, commentId: props.comment.id}}) }/>
+      <Edit style={{color: "white"}} onClick={() => props.dispatch(Actions.commentEditRoute(payload)) }/>
 
       &nbsp; &nbsp;
-      <Bomb style={{color: "red"}} onClick={() => props.dispatch({type: 'COMMENTDELETE', payload:{category:props.post.category, id:props.post.id, commentId: props.comment.id}})} />
+        <Bomb style={{color: "red"}} onClick={() => props.dispatch(Actions.commentDelRoute(payload))} />
 
       <div style={{color: "rgb(255,255,255)"}}>
         <FaArrowUp onClick={() => ReadAPI.voteComment(props.comment.id,"upVote").then(props.dispatch(Actions.upVoteComment(props.comment)))}/>
